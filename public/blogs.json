@@ -1,0 +1,103 @@
+{
+  "posts": [
+    {
+      "id": "1",
+      "title": "One Piece Chapter 1100: The Revolutionary Reveal",
+      "description": "Oda delivers another shocking twist in the latest chapter. Dive deep into the implications of this revelation and what it means for the Straw Hat crew's future adventures.",
+      "category": "Manga",
+      "readTime": "6 min read",
+      "publishDate": "Dec 20, 2024",
+      "views": "8.2K",
+      "tags": ["One Piece", "Manga", "Chapter Review", "Oda"],
+      "content": "The latest chapter of One Piece continues to push boundaries...",
+      "featured": false
+    },
+    {
+      "id": "2", 
+      "title": "Attack on Titan Final Season: A Masterclass in Storytelling",
+      "description": "An in-depth analysis of how Hajime Isayama crafted one of the most compelling endings in anime history, exploring themes of freedom, cycles of hatred, and human nature.",
+      "category": "Anime Reviews",
+      "readTime": "12 min read", 
+      "publishDate": "Dec 19, 2024",
+      "views": "15.7K",
+      "tags": ["Attack on Titan", "Review", "Analysis", "Isayama"],
+      "content": "Attack on Titan's conclusion represents a pinnacle of narrative achievement...",
+      "featured": false
+    },
+    {
+      "id": "3",
+      "title": "Marvel's Spider-Verse: The Evolution of Spider-Man",
+      "description": "From comic books to animated masterpieces, explore how Spider-Man has evolved across different mediums and what makes each iteration unique and compelling.",
+      "category": "Marvel & Comics",
+      "readTime": "10 min read",
+      "publishDate": "Dec 18, 2024", 
+      "views": "9.1K",
+      "tags": ["Spider-Man", "Marvel", "Comics", "Animation"],
+      "content": "Spider-Man's journey through various media forms showcases...",
+      "featured": false
+    },
+    {
+      "id": "4",
+      "title": "Demon Slayer Season 4: What to Expect",
+      "description": "With the Hashira Training Arc confirmed, let's break down what fans can expect from the upcoming season and how it will set up the final battle.",
+      "category": "Upcoming Releases",
+      "readTime": "5 min read",
+      "publishDate": "Dec 17, 2024",
+      "views": "22.3K", 
+      "tags": ["Demon Slayer", "Season 4", "Ufotable", "Anime"],
+      "content": "The announcement of Demon Slayer Season 4 has sent ripples...",
+      "featured": false
+    },
+    {
+      "id": "5",
+      "title": "Jujutsu Kaisen: The Hidden Meaning Behind Gojo's Powers",
+      "description": "Dive deep into the philosophical and mathematical concepts that inspire Satoru Gojo's Limitless technique and what it represents in the story's larger narrative.",
+      "category": "Fan Theories & Explained",
+      "readTime": "8 min read",
+      "publishDate": "Dec 16, 2024",
+      "views": "11.4K",
+      "tags": ["Jujutsu Kaisen", "Gojo", "Theory", "Analysis"],
+      "content": "Gojo Satoru's abilities extend far beyond their surface-level power...",
+      "featured": false
+    },
+    {
+      "id": "6",
+      "title": "Studio Ghibli's Environmental Message: More Relevant Than Ever",
+      "description": "How Hayao Miyazaki's films predicted and addressed climate change decades before it became a global crisis, and why their message resonates today.",
+      "category": "Anime Reviews",
+      "readTime": "14 min read",
+      "publishDate": "Dec 15, 2024",
+      "views": "18.9K",
+      "tags": ["Studio Ghibli", "Miyazaki", "Environment", "Analysis"],
+      "content": "Miyazaki's environmental consciousness permeates every frame...",
+      "featured": false
+    }
+  ],
+  "categories": [
+    {
+      "name": "Anime Reviews",
+      "count": 45,
+      "color": "primary"
+    },
+    {
+      "name": "Manga Chapters", 
+      "count": 32,
+      "color": "accent"
+    },
+    {
+      "name": "Marvel & Comics",
+      "count": 28,
+      "color": "secondary" 
+    },
+    {
+      "name": "Upcoming Releases",
+      "count": 15,
+      "color": "primary"
+    },
+    {
+      "name": "Fan Theories & Explained",
+      "count": 23,
+      "color": "accent"
+    }
+  ]
+}
