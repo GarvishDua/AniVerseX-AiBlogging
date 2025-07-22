@@ -17,11 +17,6 @@ const HeroSection = () => {
 
   return (
     <section className="relative mb-12">
-      {/* Top Banner Ad Placeholder */}
-      <div className="bg-muted/50 border-2 border-dashed border-muted-foreground/20 rounded-lg p-4 text-center mb-8">
-        <p className="text-sm text-muted-foreground/60 font-body">Top Banner Ad Space - 728x90</p>
-      </div>
-
       <Card className="overflow-hidden transition-theme anime-glow">
         <div className="relative h-96 md:h-[500px] bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10">
           {/* Hero Background Image */}

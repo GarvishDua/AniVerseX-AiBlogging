@@ -3,6 +3,7 @@ import { Search, Menu, X, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Link } from "react-router-dom";
 
 interface HeaderProps {
   isDarkMode: boolean;
@@ -38,13 +39,13 @@ const Header = ({ isDarkMode, toggleDarkMode }: HeaderProps) => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
             {navItems.map((item) => (
-              <a
+              <Link
                 key={item.name}
-                href={item.href}
+                to={item.href}
                 className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors"
               >
                 {item.name}
-              </a>
+              </Link>
             ))}
           </nav>
 
@@ -79,13 +80,13 @@ const Header = ({ isDarkMode, toggleDarkMode }: HeaderProps) => {
               <SheetContent side="right" className="w-64">
                 <div className="flex flex-col space-y-4 mt-8">
                   {navItems.map((item) => (
-                    <a
+                    <Link
                       key={item.name}
-                      href={item.href}
+                      to={item.href}
                       className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors py-2"
                     >
                       {item.name}
-                    </a>
+                    </Link>
                   ))}
                 </div>
               </SheetContent>

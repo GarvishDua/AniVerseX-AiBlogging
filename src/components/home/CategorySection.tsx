@@ -1,6 +1,7 @@
 import { Calendar, Clock, TrendingUp } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router-dom";
 import animeImage from "@/assets/category-anime.jpg";
 import mangaImage from "@/assets/category-manga.jpg";
 import marvelImage from "@/assets/category-marvel.jpg";
@@ -89,9 +90,11 @@ const CategorySection = ({ title, posts, color = "primary" }: CategorySectionPro
 
             <CardContent className="p-6">
               <div className="space-y-3">
-                <h3 className={`font-heading font-semibold group-hover:${variant.header} transition-colors ${index === 0 ? 'text-xl' : 'text-lg'} line-clamp-2`}>
-                  {post.title}
-                </h3>
+                <Link to={`/blog/${post.id}`}>
+                  <h3 className={`font-heading font-semibold group-hover:${variant.header} transition-colors ${index === 0 ? 'text-xl' : 'text-lg'} line-clamp-2`}>
+                    {post.title}
+                  </h3>
+                </Link>
                 
                 <p className="text-muted-foreground font-body text-sm line-clamp-3">
                   {post.description}
@@ -124,12 +127,6 @@ const CategorySection = ({ title, posts, color = "primary" }: CategorySectionPro
         ))}
       </div>
 
-      {/* In-Content Ad Placeholder */}
-      <div className="mt-8 bg-muted/50 border-2 border-dashed border-muted-foreground/20 rounded-lg p-6 text-center">
-        <TrendingUp className="h-8 w-8 mx-auto text-muted-foreground/40 mb-2" />
-        <p className="text-sm text-muted-foreground/60 font-body">In-Content Ad Space</p>
-        <p className="text-xs text-muted-foreground/40 font-body">728x250</p>
-      </div>
     </section>
   );
 };
