@@ -32,9 +32,9 @@ export const useBlogData = () => {
   useEffect(() => {
     const fetchBlogData = async () => {
       try {
-        // Use serverless API endpoint, fallback to local file in development
+        // Use fallback API endpoint for now, main API when GitHub is properly configured
         const endpoint = process.env.NODE_ENV === 'production' 
-          ? '/api/blogs' 
+          ? '/api/blogs-fallback' 
           : '/blogs.json';
         
         const response = await fetch(endpoint);
@@ -71,7 +71,7 @@ export const useBlogData = () => {
   const createPost = async (postData: Partial<Post>) => {
     try {
       const endpoint = process.env.NODE_ENV === 'production' 
-        ? '/api/blogs' 
+        ? '/api/blogs-fallback' 
         : 'http://localhost:3001/api/blogs';
       
       const response = await fetch(endpoint, {
@@ -89,7 +89,7 @@ export const useBlogData = () => {
       const result = await response.json();
       
       // Refresh blog data
-      const dataResponse = await fetch(endpoint);
+      const dataResponse = await fetch(process.env.NODE_ENV === 'production' ? '/api/blogs-fallback' : '/blogs.json');
       if (dataResponse.ok) {
         const updatedData = await dataResponse.json();
         setBlogData(updatedData);
@@ -104,7 +104,7 @@ export const useBlogData = () => {
   const deletePost = async (postId: string) => {
     try {
       const endpoint = process.env.NODE_ENV === 'production' 
-        ? `/api/blogs?id=${postId}` 
+        ? `/api/blogs-fallback?id=${postId}` 
         : `http://localhost:3001/api/blogs/${postId}`;
       
       const response = await fetch(endpoint, {
@@ -117,8 +117,8 @@ export const useBlogData = () => {
 
       // Refresh blog data
       const dataEndpoint = process.env.NODE_ENV === 'production' 
-        ? '/api/blogs' 
-        : 'http://localhost:3001/api/blogs';
+        ? '/api/blogs-fallback' 
+        : '/blogs.json';
         
       const dataResponse = await fetch(dataEndpoint);
       if (dataResponse.ok) {
