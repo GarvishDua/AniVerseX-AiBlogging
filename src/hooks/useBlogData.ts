@@ -32,9 +32,10 @@ export const useBlogData = () => {
   useEffect(() => {
     const fetchBlogData = async () => {
       try {
-        // Use static JSON file for both development and production
+        // In production, read directly from GitHub for real-time updates
+        // In development, use local JSON file
         const endpoint = process.env.NODE_ENV === 'production' 
-          ? '/api/blogs.json' 
+          ? 'https://raw.githubusercontent.com/GarvishDua/ink-splash-stories/main/public/api/blogs.json'
           : '/blogs.json';
         
         const response = await fetch(endpoint);
