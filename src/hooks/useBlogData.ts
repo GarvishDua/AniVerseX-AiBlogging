@@ -36,7 +36,7 @@ export const useBlogData = () => {
         
         // Use GitHub API to get the file content (works with private repos)
         const timestamp = Date.now();
-        const apiUrl = `https://api.github.com/repos/GarvishDua/ink-splash-stories/contents/public/blogs.json?t=${timestamp}`;
+        const apiUrl = `https://api.github.com/repos/GarvishDua/ink-splash-stories/contents/public/api/blogs.json?t=${timestamp}`;
         
         const response = await fetch(apiUrl, {
           method: 'GET',
