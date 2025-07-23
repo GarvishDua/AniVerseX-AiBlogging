@@ -3,6 +3,11 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "vite",
+  "functions": {
+    "api/add-blog.ts": {
+      "runtime": "nodejs18.x"
+    }
+  },
   "routes": [
     {
       "src": "/api/(.*)",
