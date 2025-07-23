@@ -76,62 +76,56 @@ export const useBlogData = () => {
         setLoading(true);
         setError(null);
         
-        console.log('Attempting to fetch blog data from GitHub API directly');
+        console.log('Attempting to fetch blog data from serverless API');
         
-        // Fetch directly from GitHub API first to debug
-        const response = await fetch(
-          'https://api.github.com/repos/GarvishDua/ink-splash-stories/contents/public/api/blogs.json',
-          {
-            headers: {
-              'Accept': 'application/vnd.github.v3+json',
-              'User-Agent': 'ink-splash-stories-frontend',
-            },
-            cache: 'no-cache'
-          }
-        );
+        // Try the serverless function first since it's working
+        const serverlessResponse = await fetch('/api/get-blogs', {
+          headers: { 'Content-Type': 'application/json' },
+          cache: 'no-cache'
+        });
         
-        console.log('GitHub API Response status:', response.status);
-        
-        if (!response.ok) {
-          throw new Error(`GitHub API error: ${response.status} ${response.statusText}`);
-        }
-        
-        const githubData = await response.json();
-        console.log('GitHub API response received');
-        
-        // Decode base64 content from GitHub API
-        const decodedContent = atob(githubData.content);
-        const rawData = JSON.parse(decodedContent);
-        console.log('Successfully parsed blog data from GitHub:', rawData);
-        
-        // Transform the data to match expected structure
-        const transformedData = transformBlogData(rawData);
-        setBlogData(transformedData);
-      } catch (err) {
-        console.error('Error fetching blog data from GitHub:', err);
-        
-        // Try the serverless function as fallback
-        try {
-          console.log('Attempting serverless function fallback');
-          const serverlessResponse = await fetch('/api/get-blogs', {
-            headers: { 'Content-Type': 'application/json' },
-            cache: 'no-cache'
-          });
-          
-          if (serverlessResponse.ok) {
-            const apiResponse = await serverlessResponse.json();
-            if (apiResponse.success) {
-              const transformedData = transformBlogData(apiResponse.data);
-              setBlogData(transformedData);
-              console.log('Serverless fallback successful');
-            } else {
-              throw new Error(apiResponse.error || 'Serverless API returned error');
-            }
+        if (serverlessResponse.ok) {
+          const apiResponse = await serverlessResponse.json();
+          if (apiResponse.success) {
+            const transformedData = transformBlogData(apiResponse.data);
+            setBlogData(transformedData);
+            console.log('Serverless API successful');
+            return; // Exit early on success
           } else {
-            throw new Error('Serverless API failed');
+            throw new Error(apiResponse.error || 'Serverless API returned error');
           }
-        } catch (serverlessErr) {
-          console.error('Serverless fallback failed:', serverlessErr);
+        } else {
+          throw new Error('Serverless API failed');
+        }
+      } catch (err) {
+        console.error('Error fetching from serverless API:', err);
+        
+        // Fallback to GitHub API
+        try {
+          console.log('Attempting GitHub API fallback');
+          const response = await fetch(
+            'https://api.github.com/repos/GarvishDua/ink-splash-stories/contents/public/api/blogs.json',
+            {
+              headers: {
+                'Accept': 'application/vnd.github.v3+json',
+                'User-Agent': 'ink-splash-stories-frontend',
+              },
+              cache: 'no-cache'
+            }
+          );
+          
+          if (response.ok) {
+            const githubData = await response.json();
+            const decodedContent = atob(githubData.content);
+            const rawData = JSON.parse(decodedContent);
+            const transformedData = transformBlogData(rawData);
+            setBlogData(transformedData);
+            console.log('GitHub API fallback successful');
+          } else {
+            throw new Error(`GitHub API error: ${response.status}`);
+          }
+        } catch (githubErr) {
+          console.error('GitHub API fallback failed:', githubErr);
           
           // Final fallback to static file
           try {
