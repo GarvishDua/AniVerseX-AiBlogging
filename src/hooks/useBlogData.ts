@@ -32,25 +32,31 @@ export const useBlogData = () => {
   useEffect(() => {
     const fetchBlogData = async () => {
       try {
-        console.log('Fetching blog data from GitHub...');
+        console.log('Fetching blog data from GitHub API...');
         
-        // Fetch directly from GitHub raw content with cache busting
+        // Use GitHub API to get the file content (works with private repos)
         const timestamp = Date.now();
-        const githubUrl = `https://raw.githubusercontent.com/GarvishDua/ink-splash-stories/main/public/api/blogs.json?t=${timestamp}`;
+        const apiUrl = `https://api.github.com/repos/GarvishDua/ink-splash-stories/contents/public/blogs.json?t=${timestamp}`;
         
-        const response = await fetch(githubUrl, {
+        const response = await fetch(apiUrl, {
           method: 'GET',
           headers: {
+            'Accept': 'application/vnd.github.v3+json',
             'Cache-Control': 'no-cache',
             'Pragma': 'no-cache'
           }
         });
         
         if (!response.ok) {
-          throw new Error(`GitHub fetch failed: ${response.status} ${response.statusText}`);
+          throw new Error(`GitHub API fetch failed: ${response.status} ${response.statusText}`);
         }
         
-        const data = await response.json();
+        const fileData = await response.json();
+        
+        // Decode the base64 content
+        const content = atob(fileData.content);
+        const data = JSON.parse(content);
+        
         console.log('Successfully fetched blog data:', data.posts?.length, 'posts');
         
         setBlogData(data);
