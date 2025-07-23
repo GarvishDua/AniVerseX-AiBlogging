@@ -32,20 +32,31 @@ export const useBlogData = () => {
   useEffect(() => {
     const fetchBlogData = async () => {
       try {
-        // In production, read directly from GitHub for real-time updates
-        // In development, use local JSON file
-        const endpoint = process.env.NODE_ENV === 'production' 
-          ? 'https://raw.githubusercontent.com/GarvishDua/ink-splash-stories/main/public/api/blogs.json'
-          : '/blogs.json';
+        console.log('Fetching blog data from GitHub...');
         
-        const response = await fetch(endpoint);
+        // Fetch directly from GitHub raw content with cache busting
+        const timestamp = Date.now();
+        const githubUrl = `https://raw.githubusercontent.com/GarvishDua/ink-splash-stories/main/public/api/blogs.json?t=${timestamp}`;
+        
+        const response = await fetch(githubUrl, {
+          method: 'GET',
+          headers: {
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache'
+          }
+        });
+        
         if (!response.ok) {
-          throw new Error('Failed to fetch blog data');
+          throw new Error(`GitHub fetch failed: ${response.status} ${response.statusText}`);
         }
+        
         const data = await response.json();
+        console.log('Successfully fetched blog data:', data.posts?.length, 'posts');
+        
         setBlogData(data);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Unknown error');
+        console.error('Blog data fetch error:', err);
+        setError(err instanceof Error ? err.message : 'Failed to fetch blog data from GitHub');
       } finally {
         setLoading(false);
       }
@@ -69,78 +80,12 @@ export const useBlogData = () => {
     return blogData.posts.slice(0, limit);
   };
 
-  const createPost = async (postData: Partial<Post>) => {
-    try {
-      const endpoint = process.env.NODE_ENV === 'production' 
-        ? '/api/blogs-fallback' 
-        : 'http://localhost:3001/api/blogs';
-      
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(postData),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to create post');
-      }
-
-      const result = await response.json();
-      
-      // Refresh blog data
-      const dataResponse = await fetch(process.env.NODE_ENV === 'production' ? '/api/blogs.json' : '/blogs.json');
-      if (dataResponse.ok) {
-        const updatedData = await dataResponse.json();
-        setBlogData(updatedData);
-      }
-
-      return result;
-    } catch (err) {
-      throw new Error(err instanceof Error ? err.message : 'Failed to create post');
-    }
-  };
-
-  const deletePost = async (postId: string) => {
-    try {
-      const endpoint = process.env.NODE_ENV === 'production' 
-        ? `/api/blogs-fallback?id=${postId}` 
-        : `http://localhost:3001/api/blogs/${postId}`;
-      
-      const response = await fetch(endpoint, {
-        method: 'DELETE',
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to delete post');
-      }
-
-      // Refresh blog data
-      const dataEndpoint = process.env.NODE_ENV === 'production' 
-        ? '/api/blogs.json' 
-        : '/blogs.json';
-        
-      const dataResponse = await fetch(dataEndpoint);
-      if (dataResponse.ok) {
-        const updatedData = await dataResponse.json();
-        setBlogData(updatedData);
-      }
-
-      return true;
-    } catch (err) {
-      throw new Error(err instanceof Error ? err.message : 'Failed to delete post');
-    }
-  };
-
   return {
     blogData,
     loading,
     error,
     getPostsByCategory,
     getFeaturedPosts,
-    getRecentPosts,
-    createPost,
-    deletePost
+    getRecentPosts
   };
 };
