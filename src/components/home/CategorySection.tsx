@@ -1,6 +1,7 @@
 import { Calendar, Clock, TrendingUp } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { MarkdownText } from "@/components/ui/markdown-text";
 import { Link } from "react-router-dom";
 import animeImage from "@/assets/category-anime.jpg";
 import mangaImage from "@/assets/category-manga.jpg";
@@ -96,9 +97,11 @@ const CategorySection = ({ title, posts, color = "primary" }: CategorySectionPro
                   </h3>
                 </Link>
                 
-                <p className="text-muted-foreground font-body text-sm line-clamp-3">
-                  {post.description}
-                </p>
+                <div className="text-muted-foreground font-body text-sm line-clamp-3">
+                  <MarkdownText inline>
+                    {post.description}
+                  </MarkdownText>
+                </div>
                 
                 <div className="flex flex-wrap gap-2">
                   {post.tags.slice(0, 3).map((tag) => (

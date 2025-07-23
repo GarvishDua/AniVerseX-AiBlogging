@@ -7,12 +7,12 @@ const HeroSection = () => {
   const featuredPost = {
     title: "The Evolution of Anime: From Astro Boy to Modern Masterpieces",
     description: "Explore the incredible journey of anime from its humble beginnings to the global phenomenon it is today. Discover how legendary creators shaped the industry and what the future holds.",
-    category: "Analysis",
+    category: "Trending",
     readTime: "8 min read",
     publishDate: "December 20, 2024",
     views: "12.5K",
     image: "/api/placeholder/1200/600",
-    tags: ["History", "Industry", "Analysis"]
+    tags: ["Trending"]
   };
 
   return (
@@ -33,11 +33,7 @@ const HeroSection = () => {
                 <Badge variant="default" className="bg-primary text-primary-foreground font-body">
                   {featuredPost.category}
                 </Badge>
-                {featuredPost.tags.map((tag) => (
-                  <Badge key={tag} variant="secondary" className="font-body">
-                    {tag}
-                  </Badge>
-                ))}
+                
               </div>
               
               <h1 className="text-3xl md:text-5xl lg:text-6xl font-heading font-bold mb-4 leading-tight">

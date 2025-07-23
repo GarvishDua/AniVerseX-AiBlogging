@@ -1,0 +1,36 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ],
+  "functions": {
+    "api/blogs.ts": {
+      "runtime": "@vercel/node@20.x"
+    },
+    "api/n8n-webhook.ts": {
+      "runtime": "@vercel/node@20.x"
+    }
+  },
+  "env": {
+    "GITHUB_TOKEN": "@github_token",
+    "GITHUB_OWNER": "@github_owner", 
+    "GITHUB_REPO": "@github_repo",
+    "N8N_WEBHOOK_SECRET": "@n8n_webhook_secret"
+  }
+}

@@ -32,7 +32,12 @@ export const useBlogData = () => {
   useEffect(() => {
     const fetchBlogData = async () => {
       try {
-        const response = await fetch('/blogs.json');
+        // Use serverless API endpoint, fallback to local file in development
+        const endpoint = process.env.NODE_ENV === 'production' 
+          ? '/api/blogs' 
+          : '/blogs.json';
+        
+        const response = await fetch(endpoint);
         if (!response.ok) {
           throw new Error('Failed to fetch blog data');
         }
@@ -63,12 +68,78 @@ export const useBlogData = () => {
     return blogData.posts.slice(0, limit);
   };
 
+  const createPost = async (postData: Partial<Post>) => {
+    try {
+      const endpoint = process.env.NODE_ENV === 'production' 
+        ? '/api/blogs' 
+        : 'http://localhost:3001/api/blogs';
+      
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(postData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create post');
+      }
+
+      const result = await response.json();
+      
+      // Refresh blog data
+      const dataResponse = await fetch(endpoint);
+      if (dataResponse.ok) {
+        const updatedData = await dataResponse.json();
+        setBlogData(updatedData);
+      }
+
+      return result;
+    } catch (err) {
+      throw new Error(err instanceof Error ? err.message : 'Failed to create post');
+    }
+  };
+
+  const deletePost = async (postId: string) => {
+    try {
+      const endpoint = process.env.NODE_ENV === 'production' 
+        ? `/api/blogs?id=${postId}` 
+        : `http://localhost:3001/api/blogs/${postId}`;
+      
+      const response = await fetch(endpoint, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete post');
+      }
+
+      // Refresh blog data
+      const dataEndpoint = process.env.NODE_ENV === 'production' 
+        ? '/api/blogs' 
+        : 'http://localhost:3001/api/blogs';
+        
+      const dataResponse = await fetch(dataEndpoint);
+      if (dataResponse.ok) {
+        const updatedData = await dataResponse.json();
+        setBlogData(updatedData);
+      }
+
+      return true;
+    } catch (err) {
+      throw new Error(err instanceof Error ? err.message : 'Failed to delete post');
+    }
+  };
+
   return {
     blogData,
     loading,
     error,
     getPostsByCategory,
     getFeaturedPosts,
-    getRecentPosts
+    getRecentPosts,
+    createPost,
+    deletePost
   };
 };

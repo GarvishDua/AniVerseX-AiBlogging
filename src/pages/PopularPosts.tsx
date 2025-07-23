@@ -1,7 +1,9 @@
 import { useBlogData } from "@/hooks/useBlogData";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Clock, Eye, TrendingUp } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { MarkdownText } from "@/components/ui/markdown-text";
+import { Calendar, Clock, Eye, TrendingUp, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const PopularPosts = () => {
@@ -39,6 +41,16 @@ const PopularPosts = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      {/* Back to Home Button */}
+      <div className="mb-6">
+        <Link to="/">
+          <Button variant="outline" className="font-body">
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Home
+          </Button>
+        </Link>
+      </div>
+
       <div className="flex items-center gap-3 mb-8">
         <TrendingUp className="h-8 w-8 text-primary" />
         <h1 className="text-3xl font-heading font-bold">Popular Posts</h1>
@@ -82,9 +94,11 @@ const PopularPosts = () => {
                     </h2>
                   </Link>
                   
-                  <p className="text-muted-foreground font-body line-clamp-2">
-                    {post.description}
-                  </p>
+                  <div className="text-muted-foreground font-body line-clamp-2">
+                    <MarkdownText inline>
+                      {post.description}
+                    </MarkdownText>
+                  </div>
                   
                   <div className="flex items-center gap-6 text-sm text-muted-foreground font-body">
                     <div className="flex items-center gap-2">

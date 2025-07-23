@@ -3,6 +3,7 @@ import { useBlogData } from "@/hooks/useBlogData";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { MarkdownText } from "@/components/ui/markdown-text";
 import { Calendar, Clock, Eye, ArrowLeft, Share2, BookOpen } from "lucide-react";
 
 const BlogPost = () => {
@@ -89,9 +90,11 @@ const BlogPost = () => {
               {post.title}
             </h1>
 
-            <p className="text-xl text-muted-foreground font-body leading-relaxed mb-6">
-              {post.description}
-            </p>
+            <div className="text-xl text-muted-foreground font-body leading-relaxed mb-6">
+              <MarkdownText inline>
+                {post.description}
+              </MarkdownText>
+            </div>
 
             <div className="flex flex-wrap items-center justify-between gap-4 py-4 border-y">
               <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground font-body">
@@ -119,13 +122,9 @@ const BlogPost = () => {
           {/* Article Content */}
           <Card className="anime-glow">
             <CardContent className="p-8">
-              <div className="prose prose-lg max-w-none font-body">
-                {post.content.split('\n').map((paragraph, index) => (
-                  <p key={index} className="leading-relaxed mb-6 last:mb-0">
-                    {paragraph}
-                  </p>
-                ))}
-              </div>
+              <MarkdownText className="prose prose-lg max-w-none font-body">
+                {post.content}
+              </MarkdownText>
             </CardContent>
           </Card>
 
@@ -164,9 +163,11 @@ const BlogPost = () => {
                       </h3>
                     </Link>
                     
-                    <p className="text-muted-foreground font-body text-sm line-clamp-3 mb-4">
-                      {relatedPost.description}
-                    </p>
+                    <div className="text-muted-foreground font-body text-sm line-clamp-3 mb-4">
+                      <MarkdownText inline>
+                        {relatedPost.description}
+                      </MarkdownText>
+                    </div>
                     
                     <div className="flex items-center gap-4 text-xs text-muted-foreground font-body">
                       <div className="flex items-center gap-1">
