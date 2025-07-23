@@ -1,6 +1,22 @@
 {
   "posts": [
     {
+      "id": "post-1753296599660",
+      "title": "Test Blog Post from Direct GitHub API",
+      "description": "This is a test post added directly through GitHub API to verify the integration works correctly.",
+      "content": "# Test Blog Post\n\nThis is a test blog post created at 2025-07-23T18:49:59.660Z to verify that:\n\n1. ✅ GitHub API integration works\n2. ✅ Vercel environment variables are configured\n3. ✅ Website updates automatically from GitHub\n4. ✅ Blog posting workflow is functional\n\n## How it works\n\nWhen we update the `public/api/blogs.json` file in the GitHub repository:\n\n- The website automatically reads from the GitHub raw content\n- New blog posts appear immediately \n- No manual deployment needed\n- Content is version controlled\n\nThis proves our serverless function should work perfectly!",
+      "category": "anime",
+      "readTime": "2 min read",
+      "publishDate": "2025-07-23",
+      "views": "0",
+      "tags": [
+        "test",
+        "github-api",
+        "automation"
+      ],
+      "featured": false
+    },
+    {
       "id": "post-1753296228753",
       "title": "Complete n8n Integration Test",
       "description": "Testing the complete n8n to GitHub API workflow",
@@ -139,7 +155,7 @@
   "categories": [
     {
       "name": "anime",
-      "count": 6,
+      "count": 7,
       "color": "primary"
     },
     {
