@@ -32,9 +32,9 @@ export const useBlogData = () => {
   useEffect(() => {
     const fetchBlogData = async () => {
       try {
-        // Use fallback API endpoint for now, main API when GitHub is properly configured
+        // Use static JSON file for both development and production
         const endpoint = process.env.NODE_ENV === 'production' 
-          ? '/api/blogs-fallback' 
+          ? '/api/blogs.json' 
           : '/blogs.json';
         
         const response = await fetch(endpoint);
@@ -89,7 +89,7 @@ export const useBlogData = () => {
       const result = await response.json();
       
       // Refresh blog data
-      const dataResponse = await fetch(process.env.NODE_ENV === 'production' ? '/api/blogs-fallback' : '/blogs.json');
+      const dataResponse = await fetch(process.env.NODE_ENV === 'production' ? '/api/blogs.json' : '/blogs.json');
       if (dataResponse.ok) {
         const updatedData = await dataResponse.json();
         setBlogData(updatedData);
@@ -117,7 +117,7 @@ export const useBlogData = () => {
 
       // Refresh blog data
       const dataEndpoint = process.env.NODE_ENV === 'production' 
-        ? '/api/blogs-fallback' 
+        ? '/api/blogs.json' 
         : '/blogs.json';
         
       const dataResponse = await fetch(dataEndpoint);
