@@ -1,0 +1,179 @@
+{
+  "name": "Anime Blog Serverless Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "anime-blog-webhook",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300],
+      "webhookId": "anime-blog-webhook-id"
+    },
+    {
+      "parameters": {
+        "url": "https://aniblogs-6fbrul192-garvishs-projects.vercel.app/api/post-blog",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "title",
+              "value": "={{ $node['Webhook Trigger'].json.title || 'New Anime Blog Post' }}"
+            },
+            {
+              "name": "content", 
+              "value": "={{ $node['Webhook Trigger'].json.content || 'Blog content here...' }}"
+            },
+            {
+              "name": "author",
+              "value": "={{ $node['Webhook Trigger'].json.author || 'Admin' }}"
+            },
+            {
+              "name": "category",
+              "value": "={{ $node['Webhook Trigger'].json.category || 'anime' }}"
+            },
+            {
+              "name": "tags",
+              "value": "={{ $node['Webhook Trigger'].json.tags || ['anime', 'blog'] }}"
+            },
+            {
+              "name": "featured",
+              "value": "={{ $node['Webhook Trigger'].json.featured || false }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          },
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "post-to-vercel",
+      "name": "Post to Vercel API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "success-check",
+              "leftValue": "={{ $node['Post to Vercel API'].json.success }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equal"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "check-success",
+      "name": "Check Success",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"status\": \"success\", \"message\": \"Blog post added successfully!\", \"blog\": $node['Post to Vercel API'].json.blog } }}"
+      },
+      "id": "success-response",
+      "name": "Success Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [900, 200]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"status\": \"error\", \"message\": \"Failed to add blog post\", \"error\": $node['Post to Vercel API'].json.error || 'Unknown error' } }}"
+      },
+      "id": "error-response", 
+      "name": "Error Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [900, 400]
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Post to Vercel API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post to Vercel API": {
+      "main": [
+        [
+          {
+            "node": "Check Success", 
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Success": {
+      "main": [
+        [
+          {
+            "node": "Success Response",
+            "type": "main", 
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Error Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-07-24T00:00:00.000Z",
+  "versionId": "1"
+}

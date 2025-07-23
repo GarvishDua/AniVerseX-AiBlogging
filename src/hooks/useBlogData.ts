@@ -76,42 +76,40 @@ export const useBlogData = () => {
         setLoading(true);
         setError(null);
         
-        console.log('Attempting to fetch blog data from GitHub API');
+        console.log('Attempting to fetch blog data from /api/get-blogs');
         
-        // Fetch from GitHub API
-        const response = await fetch(
-          'https://api.github.com/repos/GarvishDua/ink-splash-stories/contents/public/api/blogs.json',
-          {
-            headers: {
-              'Accept': 'application/vnd.github.v3+json',
-              'User-Agent': 'ink-splash-stories-frontend',
-            },
-            cache: 'no-cache'
-          }
-        );
+        // Fetch from our serverless function
+        const response = await fetch('/api/get-blogs', {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          cache: 'no-cache'
+        });
         
-        console.log('GitHub API Response status:', response.status);
+        console.log('Response status:', response.status);
         
         if (!response.ok) {
-          throw new Error(`Failed to fetch from GitHub API: ${response.status} ${response.statusText}`);
+          throw new Error(`Failed to fetch blog data: ${response.status} ${response.statusText}`);
         }
         
-        const githubData = await response.json();
-        console.log('GitHub API response received');
+        const apiResponse = await response.json();
+        console.log('API Response:', apiResponse);
         
-        // Decode base64 content from GitHub API
-        const decodedContent = atob(githubData.content);
-        const rawData = JSON.parse(decodedContent);
-        console.log('Successfully parsed blog data from GitHub:', rawData);
+        if (!apiResponse.success) {
+          throw new Error(apiResponse.error || 'API returned error');
+        }
+        
+        const rawData = apiResponse.data;
+        console.log('Successfully fetched blog data:', rawData);
         
         // Transform the data to match expected structure
         const transformedData = transformBlogData(rawData);
         setBlogData(transformedData);
       } catch (err) {
-        console.error('Error fetching blog data from GitHub:', err);
+        console.error('Error fetching blog data:', err);
         setError(err instanceof Error ? err.message : 'Failed to fetch blog data');
         
-        // Fallback to static file if GitHub API fails
+        // Fallback to static file
         try {
           console.log('Attempting fallback to static file');
           const fallbackResponse = await fetch('/api/blogs.json', {
