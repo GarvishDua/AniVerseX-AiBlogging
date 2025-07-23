@@ -19,7 +19,7 @@ export interface BlogPost {
 
 export interface Category {
   name: string;
-  color: string;
+  color: 'primary' | 'accent' | 'secondary';
   count: number;
 }
 
@@ -45,11 +45,11 @@ export const useBlogData = () => {
   const transformBlogData = (rawData: any): BlogData => {
     const posts: BlogPost[] = rawData.posts || [];
     
-    // Create categories array from posts
-    const categoryMap: { [key: string]: { color: string; count: number } } = {
-      'anime': { color: 'blue', count: 0 },
-      'manga': { color: 'green', count: 0 },
-      'marvel': { color: 'red', count: 0 }
+    // Create categories array from posts with proper color mapping
+    const categoryMap: { [key: string]: { color: 'primary' | 'accent' | 'secondary'; count: number } } = {
+      'anime': { color: 'primary', count: 0 },
+      'manga': { color: 'accent', count: 0 },
+      'marvel': { color: 'secondary', count: 0 }
     };
 
     // Count posts by category
