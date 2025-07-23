@@ -1,0 +1,158 @@
+{
+  "name": "GitHub Blog API Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "blog-webhook",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300],
+      "webhookId": "your-webhook-id"
+    },
+    {
+      "parameters": {
+        "url": "https://api.github.com/repos/GarvishDua/ink-splash-stories/contents/public/api/blogs.json",
+        "authentication": "headerAuth",
+        "headerAuth": {
+          "name": "Authorization",
+          "value": "Bearer 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"
+        },
+        "options": {
+          "headers": {
+            "Accept": "application/vnd.github.v3+json",
+            "User-Agent": "ink-splash-stories-n8n"
+          }
+        }
+      },
+      "id": "get-current-blogs",
+      "name": "Get Current Blogs",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the current blog data\nconst githubResponse = $node[\"Get Current Blogs\"].json;\nconst currentContent = Buffer.from(githubResponse.content, 'base64').toString('utf-8');\nconst blogData = JSON.parse(currentContent);\n\n// Get blog post data from webhook\nconst webhookData = $node[\"Webhook Trigger\"].json;\n\n// Create new blog post\nconst newPost = {\n  id: `post-${Date.now()}`,\n  title: webhookData.title || \"New Blog Post\",\n  description: webhookData.description || webhookData.title?.substring(0, 150) + '...',\n  content: webhookData.content || \"Blog content here...\",\n  category: webhookData.category || \"anime\",\n  readTime: webhookData.readTime || estimateReadTime(webhookData.content || \"\"),\n  publishDate: webhookData.publishDate || new Date().toISOString().split('T')[0],\n  views: webhookData.views || \"0\",\n  tags: Array.isArray(webhookData.tags) ? webhookData.tags : (webhookData.tags ? [webhookData.tags] : []),\n  featured: webhookData.featured === true || webhookData.featured === 'true'\n};\n\n// Add new post to the beginning of the array\nconst updatedBlogData = {\n  ...blogData,\n  posts: [newPost, ...blogData.posts]\n};\n\n// Update category counts\nconst categoryCounts = {};\nupdatedBlogData.posts.forEach(post => {\n  categoryCounts[post.category] = (categoryCounts[post.category] || 0) + 1;\n});\n\nupdatedBlogData.categories.forEach(category => {\n  category.count = categoryCounts[category.name] || 0;\n});\n\n// Helper function for read time\nfunction estimateReadTime(content) {\n  const wordsPerMinute = 200;\n  const words = content.split(/\\s+/).length;\n  const minutes = Math.ceil(words / wordsPerMinute);\n  return `${minutes} min read`;\n}\n\n// Return data for next node\nreturn {\n  updatedBlogData: updatedBlogData,\n  newPost: newPost,\n  sha: githubResponse.sha,\n  commitMessage: `Add new blog post: ${newPost.title}`\n};"
+      },
+      "id": "process-blog-data",
+      "name": "Process Blog Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://api.github.com/repos/GarvishDua/ink-splash-stories/contents/public/api/blogs.json",
+        "httpMethod": "PUT",
+        "authentication": "headerAuth",
+        "headerAuth": {
+          "name": "Authorization", 
+          "value": "Bearer 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"
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "={{ $node['Process Blog Data'].json.commitMessage }}"
+            },
+            {
+              "name": "content", 
+              "value": "={{ Buffer.from(JSON.stringify($node['Process Blog Data'].json.updatedBlogData, null, 2)).toString('base64') }}"
+            },
+            {
+              "name": "sha",
+              "value": "={{ $node['Process Blog Data'].json.sha }}"
+            }
+          ]
+        },
+        "options": {
+          "headers": {
+            "Accept": "application/vnd.github.v3+json",
+            "Content-Type": "application/json",
+            "User-Agent": "ink-splash-stories-n8n"
+          }
+        }
+      },
+      "id": "update-github",
+      "name": "Update GitHub",
+      "type": "n8n-nodes-base.httpRequest", 
+      "typeVersion": 4.1,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"success\": true,\n  \"message\": \"Blog post added successfully!\",\n  \"post\": {\n    \"id\": \"{{ $node['Process Blog Data'].json.newPost.id }}\",\n    \"title\": \"{{ $node['Process Blog Data'].json.newPost.title }}\",\n    \"category\": \"{{ $node['Process Blog Data'].json.newPost.category }}\"\n  },\n  \"commit\": {\n    \"sha\": \"{{ $node['Update GitHub'].json.commit.sha }}\",\n    \"url\": \"{{ $node['Update GitHub'].json.commit.html_url }}\"\n  },\n  \"websiteUrl\": \"https://aniblogs-dmftjjgc8-garvishs-projects.vercel.app\"\n}"
+      },
+      "id": "webhook-response",
+      "name": "Webhook Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1120, 300]
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get Current Blogs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Current Blogs": {
+      "main": [
+        [
+          {
+            "node": "Process Blog Data", 
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Blog Data": {
+      "main": [
+        [
+          {
+            "node": "Update GitHub",
+            "type": "main", 
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update GitHub": {
+      "main": [
+        [
+          {
+            "node": "Webhook Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-07-24T00:00:00.000Z",
+  "updatedAt": "2025-07-24T00:00:00.000Z",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "1"
+}
