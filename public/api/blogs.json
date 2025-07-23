@@ -1,6 +1,23 @@
 {
   "posts": [
     {
+      "id": "post-1753296228753",
+      "title": "Complete n8n Integration Test",
+      "description": "Testing the complete n8n to GitHub API workflow",
+      "content": "This blog post was created using the exact same process that n8n will use. It demonstrates the complete workflow: fetching current data from GitHub, adding the new post, updating category counts, and pushing back to GitHub. The website will automatically reflect this change within seconds!",
+      "category": "anime",
+      "readTime": "1 min read",
+      "publishDate": "2025-07-23",
+      "views": "0",
+      "tags": [
+        "n8n",
+        "github-api",
+        "automation",
+        "test"
+      ],
+      "featured": false
+    },
+    {
       "id": "post-1753295932174",
       "title": "Test Blog Post from Direct GitHub API",
       "description": "This is a test post added directly through GitHub API to verify the integration works correctly.",
@@ -122,7 +139,7 @@
   "categories": [
     {
       "name": "anime",
-      "count": 5,
+      "count": 6,
       "color": "primary"
     },
     {
