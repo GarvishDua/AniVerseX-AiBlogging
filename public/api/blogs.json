@@ -1,6 +1,38 @@
 {
   "posts": [
     {
+      "id": "post-1753299898208",
+      "title": "Test Blog Post",
+      "description": "This is a test blog post.",
+      "content": "This is a test blog post.",
+      "category": "anime",
+      "author": "Test User",
+      "readTime": "1 min read",
+      "publishDate": "2025-07-23",
+      "views": "0",
+      "tags": [
+        "blog"
+      ],
+      "featured": false
+    },
+    {
+      "id": "post-1753299888788",
+      "title": "Test Blog Post",
+      "description": "This is a test blog post to verify the serverless API is working correctly. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "content": "This is a test blog post to verify the serverless API is working correctly. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "category": "anime",
+      "author": "Test User",
+      "readTime": "1 min read",
+      "publishDate": "2025-07-23",
+      "views": "0",
+      "tags": [
+        "test",
+        "api",
+        "serverless"
+      ],
+      "featured": false
+    },
+    {
       "id": "post-1753296599660",
       "title": "Test Blog Post from Direct GitHub API",
       "description": "This is a test post added directly through GitHub API to verify the integration works correctly.",
