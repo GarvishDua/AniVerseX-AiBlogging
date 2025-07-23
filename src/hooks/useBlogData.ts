@@ -76,62 +76,88 @@ export const useBlogData = () => {
         setLoading(true);
         setError(null);
         
-        console.log('Attempting to fetch blog data from /api/get-blogs');
+        console.log('Attempting to fetch blog data from GitHub API directly');
         
-        // Fetch from our serverless function
-        const response = await fetch('/api/get-blogs', {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          cache: 'no-cache'
-        });
+        // Fetch directly from GitHub API first to debug
+        const response = await fetch(
+          'https://api.github.com/repos/GarvishDua/ink-splash-stories/contents/public/api/blogs.json',
+          {
+            headers: {
+              'Accept': 'application/vnd.github.v3+json',
+              'User-Agent': 'ink-splash-stories-frontend',
+            },
+            cache: 'no-cache'
+          }
+        );
         
-        console.log('Response status:', response.status);
+        console.log('GitHub API Response status:', response.status);
         
         if (!response.ok) {
-          throw new Error(`Failed to fetch blog data: ${response.status} ${response.statusText}`);
+          throw new Error(`GitHub API error: ${response.status} ${response.statusText}`);
         }
         
-        const apiResponse = await response.json();
-        console.log('API Response:', apiResponse);
+        const githubData = await response.json();
+        console.log('GitHub API response received');
         
-        if (!apiResponse.success) {
-          throw new Error(apiResponse.error || 'API returned error');
-        }
-        
-        const rawData = apiResponse.data;
-        console.log('Successfully fetched blog data:', rawData);
+        // Decode base64 content from GitHub API
+        const decodedContent = atob(githubData.content);
+        const rawData = JSON.parse(decodedContent);
+        console.log('Successfully parsed blog data from GitHub:', rawData);
         
         // Transform the data to match expected structure
         const transformedData = transformBlogData(rawData);
         setBlogData(transformedData);
       } catch (err) {
-        console.error('Error fetching blog data:', err);
-        setError(err instanceof Error ? err.message : 'Failed to fetch blog data');
+        console.error('Error fetching blog data from GitHub:', err);
         
-        // Fallback to static file
+        // Try the serverless function as fallback
         try {
-          console.log('Attempting fallback to static file');
-          const fallbackResponse = await fetch('/api/blogs.json', {
+          console.log('Attempting serverless function fallback');
+          const serverlessResponse = await fetch('/api/get-blogs', {
             headers: { 'Content-Type': 'application/json' },
             cache: 'no-cache'
           });
           
-          if (fallbackResponse.ok) {
-            const fallbackData = await fallbackResponse.json();
-            const transformedData = transformBlogData(fallbackData);
-            setBlogData(transformedData);
-            console.log('Fallback successful');
+          if (serverlessResponse.ok) {
+            const apiResponse = await serverlessResponse.json();
+            if (apiResponse.success) {
+              const transformedData = transformBlogData(apiResponse.data);
+              setBlogData(transformedData);
+              console.log('Serverless fallback successful');
+            } else {
+              throw new Error(apiResponse.error || 'Serverless API returned error');
+            }
           } else {
-            throw new Error('Fallback also failed');
+            throw new Error('Serverless API failed');
           }
-        } catch (fallbackErr) {
-          console.error('Fallback failed:', fallbackErr);
-          // Final fallback to empty data
-          setBlogData({
-            posts: [],
-            categories: []
-          });
+        } catch (serverlessErr) {
+          console.error('Serverless fallback failed:', serverlessErr);
+          
+          // Final fallback to static file
+          try {
+            console.log('Attempting final fallback to static file');
+            const staticResponse = await fetch('/api/blogs.json', {
+              headers: { 'Content-Type': 'application/json' },
+              cache: 'no-cache'
+            });
+            
+            if (staticResponse.ok) {
+              const staticData = await staticResponse.json();
+              const transformedData = transformBlogData(staticData);
+              setBlogData(transformedData);
+              console.log('Static file fallback successful');
+            } else {
+              throw new Error('Static file also failed');
+            }
+          } catch (staticErr) {
+            console.error('All methods failed:', staticErr);
+            setError('Failed to fetch blog data from all sources');
+            // Final fallback to empty data
+            setBlogData({
+              posts: [],
+              categories: []
+            });
+          }
         }
       } finally {
         setLoading(false);
