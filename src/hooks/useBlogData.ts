@@ -33,20 +33,31 @@ export const useBlogData = () => {
         setLoading(true);
         setError(null);
         
+        console.log('Attempting to fetch blog data from /api/blogs.json');
+        
         // Fetch from static file served by Vercel
-        const response = await fetch('/api/blogs.json');
+        const response = await fetch('/api/blogs.json', {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          cache: 'no-cache'
+        });
+        
+        console.log('Response status:', response.status);
+        console.log('Response headers:', response.headers);
         
         if (!response.ok) {
           throw new Error(`Failed to fetch blog data: ${response.status} ${response.statusText}`);
         }
         
         const data: BlogData = await response.json();
+        console.log('Successfully fetched blog data:', data);
         setBlogData(data);
       } catch (err) {
         console.error('Error fetching blog data:', err);
         setError(err instanceof Error ? err.message : 'Failed to fetch blog data');
         
-        // Fallback data for development/testing
+        // Fallback to empty data instead of trying another source
         setBlogData({
           posts: [],
           categories: { anime: 0, manga: 0, marvel: 0 }
