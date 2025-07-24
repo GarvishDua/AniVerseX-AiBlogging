@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { MarkdownText } from "@/components/ui/markdown-text";
 import BlogPostLink from "@/components/ui/BlogPostLink";
-import { Calendar, Clock, Eye, ArrowLeft, Share2, BookOpen } from "lucide-react";
+import { Calendar, Eye, ArrowLeft, Share2, BookOpen } from "lucide-react";
 
 const BlogPost = () => {
   const { id } = useParams<{ id: string }>();
@@ -134,10 +134,6 @@ const BlogPost = () => {
                   <span>{post.publishDate}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Clock className="h-4 w-4" />
-                  <span>{post.readTime}</span>
-                </div>
-                <div className="flex items-center gap-2">
                   <Eye className="h-4 w-4" />
                   <span>{currentViews || post.views} views</span>
                 </div>
@@ -204,10 +200,6 @@ const BlogPost = () => {
                       <div className="flex items-center gap-1">
                         <Calendar className="h-3 w-3" />
                         <span>{relatedPost.publishDate}</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Clock className="h-3 w-3" />
-                        <span>{relatedPost.readTime}</span>
                       </div>
                     </div>
                   </CardContent>

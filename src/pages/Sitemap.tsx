@@ -144,7 +144,6 @@ const Sitemap = () => {
                         <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
                           <span>{post.category}</span>
                           <span>{post.publishDate}</span>
-                          <span>{post.readTime}</span>
                         </div>
                       </div>
                     </Link>

@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { MarkdownText } from "@/components/ui/markdown-text";
-import { Calendar, Clock, Eye, TrendingUp, ArrowLeft } from "lucide-react";
+import { Calendar, Eye, TrendingUp, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const PopularPosts = () => {
@@ -104,10 +104,6 @@ const PopularPosts = () => {
                     <div className="flex items-center gap-2">
                       <Calendar className="h-4 w-4" />
                       <span>{post.publishDate}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Clock className="h-4 w-4" />
-                      <span>{post.readTime}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Eye className="h-4 w-4" />

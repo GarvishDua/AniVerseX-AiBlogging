@@ -38,12 +38,12 @@ const Contact = () => {
     {
       icon: Mail,
       title: "Email Us",
-      content: "hello@aniversex.com",
+      content: "garvishdua01@gmail.com",
       description: "For general inquiries and feedback"
     },
     {
       icon: MessageCircle,
-      title: "Social Media",
+      title: "Follow Us",
       content: "@AniVerseX",
       description: "Follow us for daily updates"
     },

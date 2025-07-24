@@ -1,4 +1,4 @@
-import { Calendar, Clock, TrendingUp } from "lucide-react";
+import { Calendar, TrendingUp } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MarkdownText } from "@/components/ui/markdown-text";
@@ -117,12 +117,6 @@ const CategorySection = ({ title, posts, color = "primary" }: CategorySectionPro
                       <div className="flex items-center gap-1">
                         <Calendar className="h-3 w-3" />
                         <span>{post.publishDate}</span>
-                      </div>
-                    )}
-                    {post.readTime && (
-                      <div className="flex items-center gap-1">
-                        <Clock className="h-3 w-3" />
-                        <span>{post.readTime}</span>
                       </div>
                     )}
                   </div>

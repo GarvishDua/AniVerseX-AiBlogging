@@ -1,4 +1,4 @@
-import { Calendar, Clock, Eye } from "lucide-react";
+import { Calendar, Eye } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -113,10 +113,6 @@ const HeroSection = () => {
                 <div className="flex items-center gap-2">
                   <Calendar className="h-4 w-4" />
                   <span>{featuredPost.publishDate}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Clock className="h-4 w-4" />
-                  <span>{featuredPost.readTime}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Eye className="h-4 w-4" />

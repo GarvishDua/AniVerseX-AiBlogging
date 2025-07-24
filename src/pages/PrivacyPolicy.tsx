@@ -85,7 +85,7 @@ const PrivacyPolicy = () => {
               </p>
               
               <p className="leading-relaxed">
-                If you have any questions about this Privacy Policy, please contact us at privacy@aniversex.com.
+                If you have any questions about this Privacy Policy, please contact us.
               </p>
             </div>
           </CardContent>
@@ -133,7 +133,7 @@ const PrivacyPolicy = () => {
                 If you have questions about this Privacy Policy or want to exercise your rights:
               </p>
               <ul className="text-sm text-muted-foreground space-y-1">
-                <li>• Email: privacy@aniversex.com</li>
+                <li>• Email: garvisdua01@gmail.com</li>
                 <li>• Response time: Within 72 hours</li>
                 <li>• Data protection officer available upon request</li>
               </ul>
