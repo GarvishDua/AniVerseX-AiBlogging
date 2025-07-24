@@ -88,15 +88,13 @@ class ApiService {
     }
   }
 
-  // Fetch blog data from serverless API
+  // Fetch blog data from serverless API (optimized)
   async getBlogDataFromAPI(): Promise<ApiResponse<BlogData>> {
-    console.log('Fetching blog data from serverless API');
     return this.makeApiCall<BlogData>(`${this.baseUrl}/api/get-blogs`);
   }
 
-  // Fetch blog data from GitHub API
+  // Fetch blog data from GitHub API (fallback only)
   async getBlogDataFromGitHub(): Promise<ApiResponse<BlogData>> {
-    console.log('Fetching blog data from GitHub API');
     try {
       const response = await fetch(
         'https://api.github.com/repos/GarvishDua/ink-splash-stories/contents/public/api/blogs.json',
@@ -105,7 +103,7 @@ class ApiService {
             'Accept': 'application/vnd.github.v3+json',
             'User-Agent': 'ink-splash-stories-frontend',
           },
-          cache: 'no-cache'
+          cache: 'force-cache' // Use cache for fallback
         }
       );
 
@@ -130,10 +128,8 @@ class ApiService {
     }
   }
 
-  // Fetch blog data from static file
+  // Fetch blog data from static file (last resort)
   async getBlogDataFromStatic(): Promise<ApiResponse<BlogData>> {
-    console.log('Fetching blog data from static file');
-    // Use the public path for static files
     return this.makeApiCall<BlogData>(`${this.baseUrl}/api/blogs.json`);
   }
 

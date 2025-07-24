@@ -13,93 +13,45 @@ export default async function handler(req, res) {
   }
 
   try {
-    console.log('Fetching blogs from GitHub API...');
-
-    // Prepare headers with authentication if token is available
+    // Prepare headers with minimal authentication
     const headers = {
       'Accept': 'application/vnd.github.v3+json',
       'User-Agent': 'ink-splash-stories-frontend',
     };
 
-    // Add authentication if GitHub token is available
+    // Add GitHub token if available for higher rate limits
     if (process.env.GITHUB_TOKEN) {
       headers['Authorization'] = `Bearer ${process.env.GITHUB_TOKEN}`;
-      console.log('Using GitHub token for authentication');
-    } else {
-      console.log('No GitHub token found, using public API');
     }
 
-    // Try both GitHub API endpoints
-    let blogData;
-    let fetchMethod = 'unknown';
-
-    // Method 1: Try raw GitHub URL first (simpler and often more reliable)
-    try {
-      console.log('Trying raw GitHub URL...');
-      const rawUrl = 'https://raw.githubusercontent.com/GarvishDua/ink-splash-stories/main/public/api/blogs.json';
-      const rawResponse = await fetch(rawUrl, {
-        headers: headers,
-        cache: 'no-cache'
-      });
-
-      if (rawResponse.ok) {
-        blogData = await rawResponse.json();
-        fetchMethod = 'raw-github';
-        console.log(`Raw GitHub URL successful - ${blogData.posts?.length || 0} posts`);
-      } else {
-        throw new Error(`Raw GitHub URL failed: ${rawResponse.status}`);
-      }
-    } catch (rawError) {
-      console.log('Raw GitHub URL failed, trying Contents API...', rawError.message);
-      
-      // Method 2: Try GitHub Contents API
-      const response = await fetch(
-        'https://api.github.com/repos/GarvishDua/ink-splash-stories/contents/public/api/blogs.json',
-        {
-          headers,
-          cache: 'no-cache'
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`GitHub Contents API error: ${response.status} ${response.statusText}`);
-      }
-
-      const githubData = await response.json();
-      
-      // Decode base64 content from GitHub API
-      const decodedContent = Buffer.from(githubData.content, 'base64').toString('utf-8');
-      blogData = JSON.parse(decodedContent);
-      fetchMethod = 'contents-api';
-      console.log(`GitHub Contents API successful - ${blogData.posts?.length || 0} posts`);
-    }
-
-    return res.status(200).json({
-      success: true,
-      data: blogData,
-      source: fetchMethod,
-      timestamp: new Date().toISOString()
+    // Direct fetch from raw GitHub URL (fastest method)
+    const rawUrl = 'https://raw.githubusercontent.com/GarvishDua/ink-splash-stories/main/public/api/blogs.json';
+    const response = await fetch(rawUrl, {
+      headers,
+      cache: 'no-cache'
     });
+
+    if (response.ok) {
+      const blogData = await response.json();
+      
+      // Add efficient caching headers
+      res.setHeader('Cache-Control', 'public, max-age=30, stale-while-revalidate=60');
+      
+      return res.status(200).json({
+        success: true,
+        data: blogData,
+        source: 'raw-github',
+        timestamp: new Date().toISOString()
+      });
+    } else {
+      throw new Error(`GitHub API error: ${response.status}`);
+    }
 
   } catch (error) {
-    console.error('Error in get-blogs API:', error);
-    console.error('Error details:', {
-      message: error.message,
-      status: error.status,
-      name: error.name
-    });
-    
-    // Return error response instead of fallbacks
     return res.status(500).json({
       success: false,
-      error: `GitHub API failed: ${error.message}`,
-      message: 'Unable to fetch blog data from GitHub API',
-      timestamp: new Date().toISOString(),
-      debug: {
-        githubRepo: 'GarvishDua/ink-splash-stories',
-        githubPath: 'public/api/blogs.json',
-        hasToken: !!process.env.GITHUB_TOKEN
-      }
+      error: `Failed to fetch blog data: ${error.message}`,
+      timestamp: new Date().toISOString()
     });
   }
 }
