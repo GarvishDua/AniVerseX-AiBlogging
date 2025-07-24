@@ -133,6 +133,7 @@ class ApiService {
   // Fetch blog data from static file
   async getBlogDataFromStatic(): Promise<ApiResponse<BlogData>> {
     console.log('Fetching blog data from static file');
+    // Use the public path for static files
     return this.makeApiCall<BlogData>(`${this.baseUrl}/api/blogs.json`);
   }
 

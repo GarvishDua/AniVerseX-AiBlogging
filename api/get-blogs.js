@@ -51,35 +51,68 @@ export default async function handler(req, res) {
 
   } catch (error) {
     console.error('Error in get-blogs API:', error);
+    console.error('Error details:', {
+      message: error.message,
+      status: error.status,
+      name: error.name
+    });
     
     // Fallback to static file if GitHub API fails
     try {
       console.log('Attempting fallback to static file...');
       
+      // Try to read the static file directly from the public folder
+      const fs = require('fs');
+      const path = require('path');
+      
+      // In Vercel, static files are in the root
+      const staticFilePath = path.join(process.cwd(), 'public', 'api', 'blogs.json');
+      console.log('Looking for static file at:', staticFilePath);
+      
+      if (fs.existsSync(staticFilePath)) {
+        const fileContent = fs.readFileSync(staticFilePath, 'utf8');
+        const staticData = JSON.parse(fileContent);
+        console.log(`Static file found with ${staticData.posts?.length || 0} posts`);
+        
+        return res.status(200).json({
+          success: true,
+          data: staticData,
+          source: 'static-file',
+          timestamp: new Date().toISOString()
+        });
+      } else {
+        console.log('Static file not found at:', staticFilePath);
+      }
+      
       // In production, this would be the static file served by Vercel
       const fallbackData = {
         posts: [],
-        categories: {
-          anime: 0,
-          manga: 0,
-          marvel: 0
-        }
+        categories: [] // Changed from object to array to match expected structure
       };
 
       return res.status(200).json({
         success: true,
         data: fallbackData,
         fallback: true,
+        message: 'GitHub API failed - using empty fallback',
         timestamp: new Date().toISOString()
       });
 
     } catch (fallbackError) {
       console.error('Fallback also failed:', fallbackError);
       
-      return res.status(500).json({
-        error: 'Failed to fetch blog data',
-        details: error.message,
-        fallbackError: fallbackError.message
+      // Last resort: return empty but properly structured data
+      const emptyData = {
+        posts: [],
+        categories: [] // This should be an array, not an object
+      };
+      
+      return res.status(200).json({
+        success: true,
+        data: emptyData,
+        fallback: true,
+        message: 'No data available - using empty fallback',
+        timestamp: new Date().toISOString()
       });
     }
   }
