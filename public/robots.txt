@@ -1,4 +1,25 @@
+User-agent: *
+Allow: /
+
+# Specific allowances for major crawlers
 User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+# Disallow admin or sensitive areas if any
+Disallow: /api/
+Disallow: /*.json$
+
+# Sitemap location (add your actual sitemap URL when available)
+# Sitemap: https://yourdomain.com/sitemap.xmloglebot
 Allow: /
 
 User-agent: Bingbot

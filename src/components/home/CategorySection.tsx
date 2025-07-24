@@ -10,9 +10,9 @@ import marvelImage from "@/assets/category-marvel.jpg";
 interface Post {
   id: string;
   title: string;
-  description: string;
+  description?: string;
   category: string;
-  readTime: string;
+  readTime?: string; // Made optional to match BlogPost interface
   publishDate: string;
   views: string;
   image?: string;
@@ -99,7 +99,7 @@ const CategorySection = ({ title, posts, color = "primary" }: CategorySectionPro
                 
                 <div className="text-muted-foreground font-body text-sm line-clamp-3">
                   <MarkdownText inline>
-                    {post.description}
+                    {post.description || "Discover more about this exciting post..."}
                   </MarkdownText>
                 </div>
                 
@@ -117,10 +117,12 @@ const CategorySection = ({ title, posts, color = "primary" }: CategorySectionPro
                       <Calendar className="h-3 w-3" />
                       <span>{post.publishDate}</span>
                     </div>
-                    <div className="flex items-center gap-1">
-                      <Clock className="h-3 w-3" />
-                      <span>{post.readTime}</span>
-                    </div>
+                    {post.readTime && (
+                      <div className="flex items-center gap-1">
+                        <Clock className="h-3 w-3" />
+                        <span>{post.readTime}</span>
+                      </div>
+                    )}
                   </div>
                   <span className="font-medium">{post.views} views</span>
                 </div>

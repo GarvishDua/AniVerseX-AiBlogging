@@ -1,5 +1,6 @@
 import { useTheme } from "@/contexts/ThemeContext";
 import { useBlogData } from "@/hooks/useBlogData";
+import { Link } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Sidebar from "@/components/layout/Sidebar";
 import HeroSection from "@/components/home/HeroSection";
@@ -70,23 +71,24 @@ const Index = () => {
           <div className="text-center space-y-4">
             <div className="flex items-center justify-center space-x-2">
               <div className="h-8 w-8 rounded-full gradient-primary flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-sm">A</span>
+                <span className="text-primary-foreground font-bold text-sm">I</span>
               </div>
               <span className="font-heading font-bold text-xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                AnimeVerse
+                Ink Splash Stories
               </span>
             </div>
             <p className="text-muted-foreground font-body">
-              Your ultimate destination for anime, manga, and pop culture content.
+              Your ultimate destination for anime, manga, and pop culture insights. Quality content for passionate fans.
             </p>
             <div className="flex flex-wrap justify-center gap-6 text-sm font-body">
-              <a href="/about" className="hover:text-primary transition-colors">About</a>
-              <a href="/contact" className="hover:text-primary transition-colors">Contact</a>
-              <a href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</a>
-              <a href="/terms" className="hover:text-primary transition-colors">Terms of Service</a>
+              <Link to="/about" className="hover:text-primary transition-colors">About</Link>
+              <Link to="/contact" className="hover:text-primary transition-colors">Contact</Link>  
+              <Link to="/sitemap" className="hover:text-primary transition-colors">Sitemap</Link>
+              <Link to="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
+              <Link to="/terms" className="hover:text-primary transition-colors">Terms of Service</Link>
             </div>
             <p className="text-xs text-muted-foreground font-body">
-              © 2024 AnimeVerse. All rights reserved.
+              © {new Date().getFullYear()} Ink Splash Stories. All rights reserved. Made with ❤️ for anime and manga fans.
             </p>
           </div>
         </div>
