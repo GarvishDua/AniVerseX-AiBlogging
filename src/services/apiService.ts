@@ -101,7 +101,7 @@ class ApiService {
         {
           headers: {
             'Accept': 'application/vnd.github.v3+json',
-            'User-Agent': 'ink-splash-stories-frontend',
+            'User-Agent': 'aniversex-frontend',
           },
           cache: 'force-cache' // Use cache for fallback
         }

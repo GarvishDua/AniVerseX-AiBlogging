@@ -40,7 +40,7 @@ const Header = ({ isDarkMode, toggleDarkMode }: HeaderProps) => {
               <span className="text-primary-foreground font-bold text-sm">A</span>
             </div>
             <span className="font-heading font-bold text-xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              AnimeVerse
+              AniVerseX
             </span>
           </div>
 

@@ -38,13 +38,13 @@ const Contact = () => {
     {
       icon: Mail,
       title: "Email Us",
-      content: "hello@animeverse.com",
+      content: "hello@aniversex.com",
       description: "For general inquiries and feedback"
     },
     {
       icon: MessageCircle,
       title: "Social Media",
-      content: "@AnimeVerseBlog",
+      content: "@AniVerseX",
       description: "Follow us for daily updates"
     },
     {

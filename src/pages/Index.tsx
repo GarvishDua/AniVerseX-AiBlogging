@@ -74,11 +74,11 @@ const Index = () => {
                 <span className="text-primary-foreground font-bold text-sm">I</span>
               </div>
               <span className="font-heading font-bold text-xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                Ink Splash Stories
+                AniVerseX
               </span>
             </div>
             <p className="text-muted-foreground font-body">
-              Your ultimate destination for anime, manga, and pop culture insights. Quality content for passionate fans.
+              Explore the anime universe with AniVerseX - your gateway to manga reviews, anime insights, and pop culture content.
             </p>
             <div className="flex flex-wrap justify-center gap-6 text-sm font-body">
               <Link to="/about" className="hover:text-primary transition-colors">About</Link>
@@ -88,7 +88,7 @@ const Index = () => {
               <Link to="/terms" className="hover:text-primary transition-colors">Terms of Service</Link>
             </div>
             <p className="text-xs text-muted-foreground font-body">
-              © {new Date().getFullYear()} Ink Splash Stories. All rights reserved. Made with ❤️ for anime and manga fans.
+              © {new Date().getFullYear()} AniVerseX. All rights reserved. Made with ❤️ for anime and manga fans.
             </p>
           </div>
         </div>

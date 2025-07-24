@@ -74,18 +74,18 @@ const PrivacyPolicy = () => {
           <CardContent className="p-8">
             <div className="prose max-w-none font-body">
               <p className="text-lg leading-relaxed mb-6">
-                At AnimeVerse, we respect your privacy and are committed to protecting your personal information. 
+                At AniVerseX, we respect your privacy and are committed to protecting your personal information. 
                 This Privacy Policy explains how we collect, use, and safeguard your data when you visit our website 
                 and use our services.
               </p>
               
               <p className="leading-relaxed mb-6">
                 We believe in transparency and want you to understand exactly what information we collect and why. 
-                By using AnimeVerse, you agree to the collection and use of information in accordance with this policy.
+                By using AniVerseX, you agree to the collection and use of information in accordance with this policy.
               </p>
               
               <p className="leading-relaxed">
-                If you have any questions about this Privacy Policy, please contact us at privacy@animeverse.com.
+                If you have any questions about this Privacy Policy, please contact us at privacy@aniversex.com.
               </p>
             </div>
           </CardContent>
@@ -133,7 +133,7 @@ const PrivacyPolicy = () => {
                 If you have questions about this Privacy Policy or want to exercise your rights:
               </p>
               <ul className="text-sm text-muted-foreground space-y-1">
-                <li>• Email: privacy@animeverse.com</li>
+                <li>• Email: privacy@aniversex.com</li>
                 <li>• Response time: Within 72 hours</li>
                 <li>• Data protection officer available upon request</li>
               </ul>

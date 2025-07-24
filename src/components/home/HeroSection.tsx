@@ -63,7 +63,7 @@ const HeroSection = () => {
             </div>
             
             <CardContent className="relative h-full flex flex-col justify-center items-center p-8 text-center">
-              <h2 className="text-2xl font-heading font-bold mb-4">Welcome to Ink Splash Stories</h2>
+              <h2 className="text-2xl font-heading font-bold mb-4">Welcome to AniVerseX</h2>
               <p className="text-muted-foreground font-body">
                 {error ? 'Unable to load featured content' : 'No featured posts available'}
               </p>

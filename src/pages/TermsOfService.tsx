@@ -55,10 +55,10 @@ const TermsOfService = () => {
               </CardHeader>
               <CardContent className="font-body space-y-4">
                 <p>
-                  By accessing and using Ink Splash Stories ("the Service"), you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.
+                  By accessing and using AniVerseX ("the Service"), you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.
                 </p>
                 <p>
-                  These Terms of Service ("Terms") govern your use of our website located at your domain name (the "Service") operated by Ink Splash Stories.
+                  These Terms of Service ("Terms") govern your use of our website located at your domain name (the "Service") operated by AniVerseX.
                 </p>
               </CardContent>
             </Card>
@@ -73,7 +73,7 @@ const TermsOfService = () => {
               </CardHeader>
               <CardContent className="font-body space-y-4">
                 <p>
-                  Permission is granted to temporarily download one copy of the materials on Ink Splash Stories for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not:
+                  Permission is granted to temporarily download one copy of the materials on AniVerseX for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not:
                 </p>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>modify or copy the materials</li>
@@ -163,7 +163,7 @@ const TermsOfService = () => {
               </CardHeader>
               <CardContent className="font-body space-y-4">
                 <p>
-                  In no event shall Ink Splash Stories or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on the website, even if we or our authorized representative has been notified orally or in writing of the possibility of such damage.
+                  In no event shall AniVerseX or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on the website, even if we or our authorized representative has been notified orally or in writing of the possibility of such damage.
                 </p>
                 <p>
                   Because some jurisdictions do not allow limitations on implied warranties, or limitations of liability for consequential or incidental damages, these limitations may not apply to you.

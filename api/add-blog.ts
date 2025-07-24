@@ -79,7 +79,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         headers: {
           'Authorization': `Bearer ${GITHUB_TOKEN}`,
           'Accept': 'application/vnd.github.v3+json',
-          'User-Agent': 'ink-splash-stories'
+          'User-Agent': 'aniversex'
         }
       }
     );
@@ -140,7 +140,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           'Authorization': `Bearer ${GITHUB_TOKEN}`,
           'Accept': 'application/vnd.github.v3+json',
           'Content-Type': 'application/json',
-          'User-Agent': 'ink-splash-stories'
+          'User-Agent': 'aniversex'
         },
         body: JSON.stringify({
           message: `Add new blog post: ${newPost.title}`,

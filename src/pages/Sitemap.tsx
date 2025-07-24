@@ -32,7 +32,7 @@ const Sitemap = () => {
               Sitemap
             </h1>
             <p className="text-xl text-muted-foreground font-body max-w-2xl mx-auto">
-              Find all pages and content on Ink Splash Stories
+              Find all pages and content on AniVerseX
             </p>
           </div>
 

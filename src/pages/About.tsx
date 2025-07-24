@@ -16,7 +16,7 @@ const About = () => {
     {
       name: "Alex Chen",
       role: "Founder & Editor-in-Chief",
-      description: "Anime enthusiast for 15+ years, started AnimeVerse to share the magic of Japanese culture with the world."
+      description: "Anime enthusiast for 15+ years, started AniVerseX to share the magic of Japanese culture with the world."
     },
     {
       name: "Maya Rodriguez",
@@ -26,7 +26,7 @@ const About = () => {
     {
       name: "Jordan Kim",
       role: "Community Manager",
-      description: "Connects with our amazing community and ensures everyone feels welcome in the AnimeVerse family."
+      description: "Connects with our amazing community and ensures everyone feels welcome in the AniVerseX family."
     }
   ];
 
@@ -45,7 +45,7 @@ const About = () => {
 
         <div className="text-center mb-12">
           <h1 className="text-4xl font-heading font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            About AnimeVerse
+            About AniVerseX
           </h1>
           <p className="text-xl text-muted-foreground font-body leading-relaxed">
             Your gateway to the incredible world of anime, manga, and pop culture
@@ -56,7 +56,7 @@ const About = () => {
           <CardContent className="p-8">
             <div className="prose prose-lg max-w-none font-body">
               <p className="text-lg leading-relaxed mb-6">
-                Welcome to AnimeVerse, where passion meets expertise in the vibrant world of anime and manga. 
+                Welcome to AniVerseX, where passion meets expertise in the vibrant world of anime and manga. 
                 Founded in 2021, we've grown from a small blog into a thriving community of anime enthusiasts, 
                 manga readers, and pop culture aficionados.
               </p>
@@ -76,7 +76,7 @@ const About = () => {
               
               <p className="leading-relaxed">
                 Join our community and discover why millions of fans worldwide have fallen in love with 
-                the incredible art form that is anime and manga. Welcome to AnimeVerse – where every story matters.
+                the incredible art form that is anime and manga. Welcome to AniVerseX – where every story matters.
               </p>
             </div>
           </CardContent>
@@ -125,8 +125,8 @@ const About = () => {
             <Heart className="h-12 w-12 mx-auto text-primary mb-4" />
             <h2 className="text-2xl font-heading font-bold mb-4">Join Our Community</h2>
             <p className="text-muted-foreground font-body mb-6 max-w-2xl mx-auto">
-              AnimeVerse is more than just a blog – it's a community of passionate fans who love to discuss, 
-              discover, and celebrate anime and manga together. Join thousands of readers who make AnimeVerse 
+              AniVerseX is more than just a blog – it's a community of passionate fans who love to discuss, 
+              discover, and celebrate anime and manga together. Join thousands of readers who make AniVerseX 
               their home for anime content.
             </p>
             <div className="flex flex-wrap justify-center gap-3">

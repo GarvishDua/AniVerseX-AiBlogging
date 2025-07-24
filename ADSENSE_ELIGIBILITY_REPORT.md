@@ -1,7 +1,7 @@
-# 🎯 Google AdSense Eligibility Report for Ink Splash Stories
+# 🎯 Google AdSense Eligibility Report for AniVerseX
 
 **Date:** July 24, 2025  
-**Website:** https://ink-splash-stories.vercel.app/  
+**Website:** https://aniversex.vercel.app/  
 **Status:** ✅ READY FOR ADSENSE APPLICATION
 
 ---

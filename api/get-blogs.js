@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     // Prepare headers with minimal authentication
     const headers = {
       'Accept': 'application/vnd.github.v3+json',
-      'User-Agent': 'ink-splash-stories-frontend',
+      'User-Agent': 'aniversex-frontend',
     };
 
     // Add GitHub token if available for higher rate limits

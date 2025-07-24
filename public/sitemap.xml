@@ -8,7 +8,7 @@
 
   <!-- Homepage -->
   <url>
-    <loc>https://ink-splash-stories.vercel.app/</loc>
+    <loc>https://aniversex.vercel.app/</loc>
     <lastmod>2024-12-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
@@ -16,35 +16,35 @@
 
   <!-- Main Pages -->
   <url>
-    <loc>https://ink-splash-stories.vercel.app/categories</loc>
+    <loc>https://aniversex.vercel.app/categories</loc>
     <lastmod>2024-12-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://ink-splash-stories.vercel.app/popular</loc>
+    <loc>https://aniversex.vercel.app/popular</loc>
     <lastmod>2024-12-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://ink-splash-stories.vercel.app/about</loc>
+    <loc>https://aniversex.vercel.app/about</loc>
     <lastmod>2024-12-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://ink-splash-stories.vercel.app/contact</loc>
+    <loc>https://aniversex.vercel.app/contact</loc>
     <lastmod>2024-12-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://ink-splash-stories.vercel.app/sitemap</loc>
+    <loc>https://aniversex.vercel.app/sitemap</loc>
     <lastmod>2024-12-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -52,14 +52,14 @@
 
   <!-- Legal Pages -->
   <url>
-    <loc>https://ink-splash-stories.vercel.app/privacy</loc>
+    <loc>https://aniversex.vercel.app/privacy</loc>
     <lastmod>2024-12-20</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
 
   <url>
-    <loc>https://ink-splash-stories.vercel.app/terms</loc>
+    <loc>https://aniversex.vercel.app/terms</loc>
     <lastmod>2024-12-20</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
@@ -68,21 +68,21 @@
   <!-- Blog Posts - These should be dynamically generated -->
   <!-- For now, adding some example posts -->
   <url>
-    <loc>https://ink-splash-stories.vercel.app/blog/1</loc>
+    <loc>https://aniversex.vercel.app/blog/1</loc>
     <lastmod>2024-12-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://ink-splash-stories.vercel.app/blog/2</loc>
+    <loc>https://aniversex.vercel.app/blog/2</loc>
     <lastmod>2024-12-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://ink-splash-stories.vercel.app/blog/3</loc>
+    <loc>https://aniversex.vercel.app/blog/3</loc>
     <lastmod>2024-12-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

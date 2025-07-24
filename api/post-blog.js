@@ -49,7 +49,7 @@ export default async function handler(req, res) {
         headers: {
           'Authorization': `Bearer ${githubToken}`,
           'Accept': 'application/vnd.github.v3+json',
-          'User-Agent': 'ink-splash-stories-api'
+          'User-Agent': 'aniversex-api'
         }
       }
     );
@@ -77,7 +77,7 @@ export default async function handler(req, res) {
           'Authorization': `Bearer ${githubToken}`,
           'Accept': 'application/vnd.github.v3+json',
           'Content-Type': 'application/json',
-          'User-Agent': 'ink-splash-stories-api'
+          'User-Agent': 'aniversex-api'
         },
         body: JSON.stringify({
           message: `Add new blog post: ${processedBlog.title}`,

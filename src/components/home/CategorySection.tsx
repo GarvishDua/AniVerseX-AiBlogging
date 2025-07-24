@@ -13,7 +13,7 @@ interface Post {
   description?: string;
   category: string;
   readTime?: string; // Made optional to match BlogPost interface
-  publishDate: string;
+  publishDate?: string; // Made optional to match BlogPost interface
   views: string;
   image?: string;
   tags: string[];
@@ -113,10 +113,12 @@ const CategorySection = ({ title, posts, color = "primary" }: CategorySectionPro
                 
                 <div className="flex items-center justify-between text-xs text-muted-foreground font-body pt-2 border-t">
                   <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-1">
-                      <Calendar className="h-3 w-3" />
-                      <span>{post.publishDate}</span>
-                    </div>
+                    {post.publishDate && (
+                      <div className="flex items-center gap-1">
+                        <Calendar className="h-3 w-3" />
+                        <span>{post.publishDate}</span>
+                      </div>
+                    )}
                     {post.readTime && (
                       <div className="flex items-center gap-1">
                         <Clock className="h-3 w-3" />
