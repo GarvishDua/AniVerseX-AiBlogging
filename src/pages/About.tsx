@@ -57,7 +57,7 @@ const About = () => {
             <div className="prose prose-lg max-w-none font-body">
               <p className="text-lg leading-relaxed mb-6">
                 Welcome to AniVerseX, where passion meets expertise in the vibrant world of anime and manga. 
-                Founded in 2024, we've grown from a small blog into a thriving community of anime enthusiasts, 
+                Founded in 2025, we've grown from a small blog into a thriving community of anime enthusiasts, 
                 manga readers, and pop culture aficionados.
               </p>
               
