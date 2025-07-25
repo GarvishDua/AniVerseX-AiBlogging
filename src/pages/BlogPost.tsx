@@ -1,7 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { useState, useEffect } from "react";
 import { useBlogData } from "@/hooks/useBlogData";
-import { useAutoViewTracking } from "@/hooks/useViewTracking";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -12,36 +10,9 @@ import { Calendar, Eye, ArrowLeft, Share2, BookOpen } from "lucide-react";
 const BlogPost = () => {
   const { id } = useParams<{ id: string }>();
   const { blogData, loading, error } = useBlogData();
-  const [currentViews, setCurrentViews] = useState<string>('');
 
   // Find the current post
   const post = blogData?.posts.find(p => p.id === id);
-
-  // Initialize current views from post data
-  useEffect(() => {
-    if (post?.views) {
-      setCurrentViews(post.views);
-    }
-  }, [post?.views]);
-
-  // Auto-track view when component mounts
-  const { trackOnMount, hasTracked } = useAutoViewTracking(id, {
-    onSuccess: (newViewCount) => {
-      setCurrentViews(newViewCount);
-      console.log(`🎯 View count updated to: ${newViewCount}`);
-    },
-    onError: (error) => {
-      console.error('View tracking failed:', error);
-    }
-  });
-
-  // Track view on component mount with a small delay
-  useEffect(() => {
-    if (post && !hasTracked) {
-      const timer = setTimeout(trackOnMount, 1500); // 1.5 second delay
-      return () => clearTimeout(timer);
-    }
-  }, [post, hasTracked, trackOnMount]);
 
   if (loading) {
     return (
@@ -135,7 +106,7 @@ const BlogPost = () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <Eye className="h-4 w-4" />
-                  <span>{currentViews || post.views} views</span>
+                  <span>{post.views} views</span>
                 </div>
               </div>
 

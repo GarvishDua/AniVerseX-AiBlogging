@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Search, Menu, X, Sun, Moon, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useBlogData } from "@/hooks/useBlogData";
 
 interface HeaderProps {
   isDarkMode: boolean;
@@ -13,6 +14,56 @@ interface HeaderProps {
 const Header = ({ isDarkMode, toggleDarkMode }: HeaderProps) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileCategoriesOpen, setIsMobileCategoriesOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+  const { blogData } = useBlogData();
+
+  // Filter posts based on search query
+  const filteredPosts = searchQuery.length > 0 
+    ? blogData?.posts.filter(post => 
+        post.title.toLowerCase().includes(searchQuery.toLowerCase())
+      ).slice(0, 5) // Show only top 5 results
+    : [];
+
+  // Handle click outside to close dropdown
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setShowDropdown(false);
+        setIsSearchOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  // Handle search input change
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+    setShowDropdown(value.length > 0);
+  };
+
+  // Handle post selection
+  const handlePostSelect = (postId: string) => {
+    navigate(`/blog/${postId}`);
+    setSearchQuery("");
+    setShowDropdown(false);
+    setIsSearchOpen(false);
+  };
+
+  // Handle search submit
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (filteredPosts && filteredPosts.length > 0) {
+      handlePostSelect(filteredPosts[0].id);
+    }
+  };
 
   const navItems = [
     { name: "Home", href: "/" },
@@ -90,7 +141,7 @@ const Header = ({ isDarkMode, toggleDarkMode }: HeaderProps) => {
               variant="ghost"
               size="sm"
               onClick={() => setIsSearchOpen(!isSearchOpen)}
-              className="hidden sm:flex"
+              className="flex"
             >
               <Search className="h-4 w-4" />
             </Button>
@@ -159,28 +210,75 @@ const Header = ({ isDarkMode, toggleDarkMode }: HeaderProps) => {
 
         {/* Floating Search Bar */}
         {isSearchOpen && (
-          <div className="absolute top-16 left-0 right-0 bg-background/95 backdrop-blur border-b p-4 animate-fade-in">
-            <div className="max-w-md mx-auto">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-                <Input
-                  placeholder="Search anime, manga, articles..."
-                  className="pl-10 pr-10"
-                  autoFocus
-                />
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setIsSearchOpen(false)}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2"
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              </div>
+          <div className="absolute top-16 left-0 right-0 bg-background/95 backdrop-blur border-b p-4 animate-fade-in z-50">
+            <div className="max-w-md mx-auto" ref={searchRef}>
+              <form onSubmit={handleSearchSubmit}>
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                  <Input
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                    placeholder="Search blog posts by title..."
+                    className="pl-10 pr-10"
+                    autoFocus
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      setIsSearchOpen(false);
+                      setSearchQuery("");
+                      setShowDropdown(false);
+                    }}
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+              </form>
+
+              {/* Search Results Dropdown */}
+              {showDropdown && filteredPosts && filteredPosts.length > 0 && (
+                <div className="absolute top-full left-0 right-0 mt-1 bg-background border rounded-md shadow-lg max-h-64 overflow-y-auto z-50">
+                  {filteredPosts.map((post) => (
+                    <button
+                      key={post.id}
+                      onClick={() => handlePostSelect(post.id)}
+                      className="w-full text-left px-4 py-3 hover:bg-accent/50 transition-colors border-b last:border-b-0 group"
+                    >
+                      <div className="font-medium text-sm line-clamp-1 group-hover:text-primary">
+                        {post.title}
+                      </div>
+                      <div className="text-xs text-muted-foreground mt-1 flex items-center gap-2">
+                        <span className="bg-primary/10 text-primary px-2 py-0.5 rounded-full">
+                          {post.category}
+                        </span>
+                        <span>{post.publishDate}</span>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {/* Show "No results" message */}
+              {showDropdown && searchQuery.length > 0 && (!filteredPosts || filteredPosts.length === 0) && (
+                <div className="absolute top-full left-0 right-0 mt-1 bg-background border rounded-md shadow-lg z-50">
+                  <div className="px-4 py-3 text-sm text-muted-foreground text-center">
+                    No blog posts found matching "{searchQuery}"
+                  </div>
+                </div>
+              )}
+
               <div className="flex flex-wrap gap-2 mt-3">
                 {["Anime", "Manga", "Marvel", "Reviews", "Theories"].map((tag) => (
                   <button
                     key={tag}
+                    type="button"
+                    onClick={() => {
+                      setSearchQuery(tag.toLowerCase());
+                      setShowDropdown(true);
+                    }}
                     className="px-3 py-1 text-xs font-medium bg-secondary text-secondary-foreground rounded-full hover:bg-accent hover:text-accent-foreground transition-all duration-200 ease-in-out hover:scale-105 hover:shadow-md"
                   >
                     {tag}

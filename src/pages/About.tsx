@@ -6,15 +6,15 @@ import { Link } from "react-router-dom";
 
 const About = () => {
   const stats = [
-    { icon: BookOpen, label: "Articles Published", value: "150+" },
-    { icon: Users, label: "Monthly Readers", value: "25K+" },
+    { icon: BookOpen, label: "Articles Published", value: "10+" },
+    { icon: Users, label: "Monthly Readers", value: "1K+" },
     { icon: Star, label: "Community Rating", value: "4.9/5" },
-    { icon: Heart, label: "Years Running", value: "3+" }
+    { icon: Heart, label: "Years Running", value: "1" }
   ];
 
   const team = [
     {
-      name: "Alex Chen",
+      name: "Garvish Dua",
       role: "Founder & Editor-in-Chief",
       description: "Anime enthusiast for 15+ years, started AniVerseX to share the magic of Japanese culture with the world."
     },
@@ -98,7 +98,7 @@ const About = () => {
           ))}
         </div>
 
-        <div className="mb-12">
+        {/* <div className="mb-12">
           <h2 className="text-2xl font-heading font-bold mb-6 text-center">Meet Our Team</h2>
           <div className="grid md:grid-cols-3 gap-6">
             {team.map((member) => (
@@ -118,7 +118,7 @@ const About = () => {
               </Card>
             ))}
           </div>
-        </div>
+        </div> */}
 
         <Card className="anime-glow">
           <CardContent className="p-8 text-center">

@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import { useViewTracking } from '@/hooks/useViewTracking';
 import { ReactNode } from 'react';
 
 interface BlogPostLinkProps {
@@ -11,7 +10,6 @@ interface BlogPostLinkProps {
 
 export const BlogPostLink = ({ postId, children, className = '', onClick }: BlogPostLinkProps) => {
   const navigate = useNavigate();
-  const { trackView, isTracking } = useViewTracking();
 
   const handleClick = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -19,12 +17,7 @@ export const BlogPostLink = ({ postId, children, className = '', onClick }: Blog
     // Execute custom onClick if provided
     onClick?.();
     
-    // Track the view in background (don't wait for it)
-    trackView(postId).catch(err => {
-      console.warn('View tracking failed:', err);
-    });
-    
-    // Navigate immediately for better UX
+    // Navigate to the blog post
     navigate(`/blog/${postId}`);
   };
 
@@ -32,7 +25,7 @@ export const BlogPostLink = ({ postId, children, className = '', onClick }: Blog
     <a 
       href={`/blog/${postId}`}
       onClick={handleClick}
-      className={`${className} ${isTracking ? 'opacity-90' : ''} transition-opacity cursor-pointer`}
+      className={`${className} transition-opacity cursor-pointer`}
     >
       {children}
     </a>
