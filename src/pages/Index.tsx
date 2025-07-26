@@ -8,10 +8,23 @@ import Header from "@/components/layout/Header";
 import Sidebar from "@/components/layout/Sidebar";
 import HeroSection from "@/components/home/HeroSection";
 import CategorySection from "@/components/home/CategorySection";
+import animeImage from "@/assets/category-anime.jpg";
+import mangaImage from "@/assets/category-manga.jpg";
+import marvelImage from "@/assets/category-marvel.jpg";
+import heroImage from "@/assets/hero-anime.jpg";
 
 const Index = () => {
   const { isDarkMode, toggleDarkMode } = useTheme();
   const { blogData, loading, error, getPostsByCategory } = useBlogData();
+
+  // Helper function to get category image
+  const getCategoryImage = (categoryName: string) => {
+    const name = categoryName.toLowerCase();
+    if (name.includes('anime')) return animeImage;
+    if (name.includes('manga')) return mangaImage;
+    if (name.includes('marvel')) return marvelImage;
+    return heroImage;
+  };
 
   if (loading) {
     return (
@@ -85,14 +98,10 @@ const Index = () => {
                               <Card className="overflow-hidden hover:scale-[1.02] transition-all duration-300 bg-card/90 backdrop-blur-sm border border-border/50 group">
                                 <div className="aspect-[16/10] bg-gradient-to-br from-primary/10 to-accent/10 relative overflow-hidden">
                                   {/* Category-based background image */}
-                                  <div className="absolute inset-0 bg-cover bg-center" style={{
-                                    backgroundImage: `url(${
-                                      category.name.toLowerCase().includes('anime') ? '/src/assets/category-anime.jpg' :
-                                      category.name.toLowerCase().includes('manga') ? '/src/assets/category-manga.jpg' :
-                                      category.name.toLowerCase().includes('marvel') ? '/src/assets/category-marvel.jpg' :
-                                      '/src/assets/hero-anime.jpg'
-                                    })`
-                                  }}></div>
+                                  <div 
+                                    className="absolute inset-0 bg-cover bg-center" 
+                                    style={{ backgroundImage: `url(${getCategoryImage(category.name)})` }}
+                                  ></div>
                                   <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-background/60"></div>
                                   <div className="absolute bottom-4 left-4 right-4">
                                     <Badge variant="secondary" className="text-xs mb-2 bg-secondary/80">
@@ -117,14 +126,10 @@ const Index = () => {
                                 <div className="flex gap-3 p-4">
                                   <div className="w-20 h-20 bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg flex-shrink-0 relative overflow-hidden group-hover:scale-105 transition-transform duration-300">
                                     {/* Category-based thumbnail */}
-                                    <div className="absolute inset-0 bg-cover bg-center" style={{
-                                      backgroundImage: `url(${
-                                        category.name.toLowerCase().includes('anime') ? '/src/assets/category-anime.jpg' :
-                                        category.name.toLowerCase().includes('manga') ? '/src/assets/category-manga.jpg' :
-                                        category.name.toLowerCase().includes('marvel') ? '/src/assets/category-marvel.jpg' :
-                                        '/src/assets/hero-anime.jpg'
-                                      })`
-                                    }}></div>
+                                    <div 
+                                      className="absolute inset-0 bg-cover bg-center" 
+                                      style={{ backgroundImage: `url(${getCategoryImage(category.name)})` }}
+                                    ></div>
                                     <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
                                   </div>
                                   <div className="flex-1 min-w-0">
