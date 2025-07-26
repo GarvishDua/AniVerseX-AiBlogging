@@ -1,6 +1,9 @@
 import { useTheme } from "@/contexts/ThemeContext";
 import { useBlogData } from "@/hooks/useBlogData";
 import { Link } from "react-router-dom";
+import { TrendingUp } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import Header from "@/components/layout/Header";
 import Sidebar from "@/components/layout/Sidebar";
 import HeroSection from "@/components/home/HeroSection";
@@ -38,7 +41,121 @@ const Index = () => {
       <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
       
       <main className="container mx-auto px-4 py-8">
-        <div className="flex flex-col lg:flex-row gap-8">
+        {/* Mobile Only: Modern Layout */}
+        <div className="block md:hidden">
+          <HeroSection />
+          
+          {/* Mobile Modern Category Layout */}
+          <div className="space-y-8 mt-8">
+            {blogData.categories.map((category, categoryIndex) => {
+              const posts = getPostsByCategory(category.name);
+              if (posts.length === 0) return null;
+              
+              return (
+                <div key={category.name} className="relative">
+                  {/* Background decoration */}
+                  <div className="absolute inset-0 overflow-hidden">
+                    <div className={`absolute top-0 ${categoryIndex % 2 === 0 ? 'right-0' : 'left-0'} w-32 h-32 bg-gradient-to-br from-primary/8 to-accent/8 rounded-full blur-3xl`}></div>
+                  </div>
+                  
+                  <div className="relative">
+                    {/* Category Header */}
+                    <div className="mb-6">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="h-1 w-8 bg-gradient-to-r from-primary to-accent rounded-full"></div>
+                          <h2 className="text-xl font-heading font-bold">{category.name}</h2>
+                        </div>
+                        <Link 
+                          to={`/categories?filter=${category.name.toLowerCase()}`}
+                          className="text-sm text-primary hover:text-primary/80 transition-colors font-medium"
+                        >
+                          View All
+                        </Link>
+                      </div>
+                    </div>
+
+                    {/* Mobile Cards */}
+                    <div className="space-y-4">
+                      {posts.slice(0, 3).map((post, index) => (
+                        <div key={post.id} className={`${index % 2 === 1 ? 'ml-6' : 'mr-6'}`}>
+                          {index === 0 ? (
+                            // Featured large card
+                            <Link to={`/blog/${post.id}`}>
+                              <Card className="overflow-hidden hover:scale-[1.02] transition-all duration-300 bg-card/90 backdrop-blur-sm border border-border/50 group">
+                                <div className="aspect-[16/10] bg-gradient-to-br from-primary/10 to-accent/10 relative overflow-hidden">
+                                  {/* Category-based background image */}
+                                  <div className="absolute inset-0 bg-cover bg-center" style={{
+                                    backgroundImage: `url(${
+                                      category.name.toLowerCase().includes('anime') ? '/src/assets/category-anime.jpg' :
+                                      category.name.toLowerCase().includes('manga') ? '/src/assets/category-manga.jpg' :
+                                      category.name.toLowerCase().includes('marvel') ? '/src/assets/category-marvel.jpg' :
+                                      '/src/assets/hero-anime.jpg'
+                                    })`
+                                  }}></div>
+                                  <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-background/60"></div>
+                                  <div className="absolute bottom-4 left-4 right-4">
+                                    <Badge variant="secondary" className="text-xs mb-2 bg-secondary/80">
+                                      {post.category}
+                                    </Badge>
+                                    <h3 className="font-heading font-semibold text-lg line-clamp-2 mb-2 text-white group-hover:text-primary transition-colors">{post.title}</h3>
+                                    <div className="flex items-center gap-3 text-xs text-white/80">
+                                      <span>{post.publishDate}</span>
+                                      <div className="flex items-center gap-1">
+                                        <TrendingUp className="h-3 w-3" />
+                                        <span>{post.views || '0'} views</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </Card>
+                            </Link>
+                          ) : (
+                            // Compact cards
+                            <Link to={`/blog/${post.id}`}>
+                              <Card className="overflow-hidden hover:scale-[1.02] transition-all duration-300 bg-card/80 backdrop-blur-sm border border-border/50 group">
+                                <div className="flex gap-3 p-4">
+                                  <div className="w-20 h-20 bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg flex-shrink-0 relative overflow-hidden group-hover:scale-105 transition-transform duration-300">
+                                    {/* Category-based thumbnail */}
+                                    <div className="absolute inset-0 bg-cover bg-center" style={{
+                                      backgroundImage: `url(${
+                                        category.name.toLowerCase().includes('anime') ? '/src/assets/category-anime.jpg' :
+                                        category.name.toLowerCase().includes('manga') ? '/src/assets/category-manga.jpg' :
+                                        category.name.toLowerCase().includes('marvel') ? '/src/assets/category-marvel.jpg' :
+                                        '/src/assets/hero-anime.jpg'
+                                      })`
+                                    }}></div>
+                                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <Badge variant="secondary" className="text-xs mb-2 bg-secondary/80">
+                                      {post.category}
+                                    </Badge>
+                                    <h3 className="font-heading font-semibold text-sm line-clamp-2 mb-2 group-hover:text-primary transition-colors">{post.title}</h3>
+                                    <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                                      <span>{post.publishDate}</span>
+                                      <div className="flex items-center gap-1">
+                                        <TrendingUp className="h-3 w-3" />
+                                        <span>{post.views || '0'} views</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </Card>
+                            </Link>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Desktop/Tablet: Original Layout */}
+        <div className="hidden md:flex flex-col lg:flex-row gap-8">
           {/* Main Content */}
           <div className="flex-1">
             <HeroSection />
@@ -62,6 +179,15 @@ const Index = () => {
           <div className="hidden lg:block">
             <Sidebar />
           </div>
+        </div>
+
+        {/* Floating Action Element for Mobile */}
+        <div className="fixed bottom-6 right-6 md:hidden z-50">
+          <Link to="/popular">
+            <div className="w-14 h-14 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 floating-pulse anime-glow">
+              <TrendingUp className="h-6 w-6 text-white" />
+            </div>
+          </Link>
         </div>
       </main>
 
