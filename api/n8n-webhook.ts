@@ -181,6 +181,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(500).json({ error: 'Could not get file SHA from GitHub' });
     }
 
+    // Helper function to generate random view count
+    const generateRandomViews = (): string => {
+      const randomNum = Math.floor(Math.random() * 5000) + 1000; // Random between 1000-6000
+      return `${(randomNum / 1000).toFixed(1)}k`; // Always format as "1.0k", "2.5k", etc.
+    };
+
     // Prepare new blog post with defaults
     const newPost: BlogPost = {
       id: incomingData.id || `n8n-${Date.now()}`,
@@ -194,7 +200,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         month: 'short',
         day: 'numeric'
       }),
-      views: incomingData.views || '0',
+      views: incomingData.views || generateRandomViews(),
       tags: Array.isArray(incomingData.tags) ? incomingData.tags : (incomingData.tags ? [incomingData.tags] : []),
       featured: incomingData.featured === true || incomingData.featured === 'true',
       slug: incomingData.slug || generateSlug(incomingData.title),

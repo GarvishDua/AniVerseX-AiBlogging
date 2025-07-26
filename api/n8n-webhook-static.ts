@@ -42,6 +42,12 @@ function estimateReadTime(content: string): string {
   return `${minutes} min read`;
 }
 
+// Helper function to generate random view count
+function generateRandomViews(): string {
+  const randomNum = Math.floor(Math.random() * 5000) + 1000; // Random between 1000-6000
+  return `${(randomNum / 1000).toFixed(1)}k`; // Always format as "1.0k", "2.5k", etc.
+}
+
 // Helper function to update category counts
 function updateCategoryCounts(blogData: BlogData): BlogData {
   const categoryCounts: { [key: string]: number } = {};
@@ -121,7 +127,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       category: incomingData.category || 'anime',
       readTime: incomingData.readTime || estimateReadTime(incomingData.content),
       publishDate: incomingData.publishDate || new Date().toISOString().split('T')[0],
-      views: incomingData.views || '0',
+      views: incomingData.views || generateRandomViews(),
       tags: Array.isArray(incomingData.tags) ? incomingData.tags : (incomingData.tags ? [incomingData.tags] : []),
       featured: incomingData.featured === true || incomingData.featured === 'true'
     };

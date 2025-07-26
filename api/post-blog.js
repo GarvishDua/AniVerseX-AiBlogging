@@ -30,7 +30,7 @@ export default async function handler(req, res) {
       author: author || 'Admin',
       readTime: estimateReadTime(content),
       publishDate: new Date().toISOString().split('T')[0],
-      views: '0',
+      views: generateRandomViews(),
       tags: Array.isArray(tags) ? tags : (tags ? [tags] : ['blog']),
       featured: featured === true || featured === 'true' || false
     };
@@ -115,4 +115,10 @@ function estimateReadTime(content) {
   const words = content.split(/\s+/).length;
   const minutes = Math.ceil(words / wordsPerMinute);
   return `${minutes} min read`;
+}
+
+// Helper function to generate random view count
+function generateRandomViews() {
+  const randomNum = Math.floor(Math.random() * 5000) + 1000; // Random between 1000-6000
+  return `${(randomNum / 1000).toFixed(1)}k`; // Always format as "1.0k", "2.5k", etc.
 }

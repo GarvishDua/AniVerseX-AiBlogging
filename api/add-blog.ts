@@ -107,7 +107,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       category: body.category || 'anime',
       readTime: body.readTime || estimateReadTime(body.content),
       publishDate: body.publishDate || new Date().toISOString().split('T')[0],
-      views: body.views || '0',
+      views: body.views || generateRandomViews(),
       tags: Array.isArray(body.tags) ? body.tags : (body.tags ? [body.tags] : []),
       featured: body.featured === true || body.featured === 'true'
     };
@@ -181,10 +181,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 }
 
-// Helper function
+// Helper function to estimate read time
 function estimateReadTime(content: string): string {
   const wordsPerMinute = 200;
   const words = content.split(/\s+/).length;
   const minutes = Math.ceil(words / wordsPerMinute);
   return `${minutes} min read`;
+}
+
+// Helper function to generate random view count
+function generateRandomViews(): string {
+  const randomNum = Math.floor(Math.random() * 5000) + 1000; // Random between 1000-6000
+  return `${(randomNum / 1000).toFixed(1)}k`; // Always format as "1.0k", "2.5k", etc.
 }
