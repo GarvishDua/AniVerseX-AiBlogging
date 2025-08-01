@@ -75,10 +75,9 @@ const Header = ({ isDarkMode, toggleDarkMode }: HeaderProps) => {
 
   const categoryItems = [
     { name: "All Categories", href: "/categories" },
-    { name: "Anime Reviews", href: "/categories?filter=anime-reviews" },
+    { name: "Anime", href: "/categories?filter=anime" },
     { name: "Manga", href: "/categories?filter=manga" },
-    { name: "Marvel & Comics", href: "/categories?filter=marvel-comics" },
-    { name: "Fan Theories", href: "/categories?filter=fan-theories" },
+    { name: "Marvel", href: "/categories?filter=marvel" },
   ];
 
   return (
