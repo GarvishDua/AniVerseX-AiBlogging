@@ -1,6 +1,7 @@
 import { Calendar, TrendingUp } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { MarkdownText } from "@/components/ui/markdown-text";
 import { Link } from "react-router-dom";
 import animeImage from "@/assets/category-anime.jpg";
@@ -14,9 +15,10 @@ interface Post {
   category: string;
   readTime?: string; // Made optional to match BlogPost interface
   publishDate?: string; // Made optional to match BlogPost interface
-  views: string;
+  views?: string; // Made optional to match BlogPost interface
   image?: string;
-  tags: string[];
+  tags?: string[];
+  thumbnail?: string;
 }
 
 interface CategorySectionProps {
@@ -46,7 +48,8 @@ const CategorySection = ({ title, posts, color = "primary" }: CategorySectionPro
 
   const variant = colorVariants[color];
   
-  const getCategoryImage = (category: string) => {
+  const getCategoryImage = (category: string, thumbnail?: string) => {
+    if (thumbnail) return thumbnail;
     switch (category.toLowerCase()) {
       case 'anime reviews':
         return animeImage;
@@ -70,13 +73,13 @@ const CategorySection = ({ title, posts, color = "primary" }: CategorySectionPro
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {posts.map((post, index) => (
+        {posts.slice(0, 5).map((post, index) => (
           <Card key={post.id} className={`group cursor-pointer transition-all duration-300 hover:scale-105 hover:anime-glow ${index === 0 ? 'md:col-span-2' : ''}`}>
             <div className={`relative ${index === 0 ? 'h-64' : 'h-48'} bg-gradient-to-br from-muted/50 to-muted rounded-t-lg overflow-hidden`}>
-              {/* Category-specific background image */}
+              {/* Custom thumbnail or category-specific background image */}
               <div 
                 className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                style={{ backgroundImage: `url(${getCategoryImage(post.category)})` }}
+                style={{ backgroundImage: `url(${getCategoryImage(post.category, post.thumbnail)})` }}
               >
                 <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-background/60"></div>
               </div>
@@ -120,13 +123,27 @@ const CategorySection = ({ title, posts, color = "primary" }: CategorySectionPro
                       </div>
                     )}
                   </div>
-                  <span className="font-medium">{post.views} views</span>
+                  <span className="font-medium">{post.views || '0'} views</span>
                 </div>
               </div>
             </CardContent>
           </Card>
         ))}
       </div>
+
+      {/* View All Button - Show only if there are more than 5 posts */}
+      {posts.length > 5 && (
+        <div className="flex justify-center mt-8">
+          <Link to={`/categories?filter=${title.toLowerCase()}`}>
+            <Button 
+              variant="outline" 
+              className={`hover:scale-105 transition-all duration-300 ${variant.gradient} border-2 text-white hover:text-white`}
+            >
+              View All {title} Posts ({posts.length})
+            </Button>
+          </Link>
+        </div>
+      )}
 
     </section>
   );

@@ -21,6 +21,7 @@ export interface BlogPost {
   publishDate?: string;
   views?: string;
   featured?: boolean;
+  thumbnail?: string;
 }
 
 export interface Category {

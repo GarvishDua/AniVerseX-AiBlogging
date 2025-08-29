@@ -18,7 +18,8 @@ const Index = () => {
   const { blogData, loading, error, getPostsByCategory } = useBlogData();
 
   // Helper function to get category image
-  const getCategoryImage = (categoryName: string) => {
+  const getCategoryImage = (categoryName: string, thumbnail?: string) => {
+    if (thumbnail) return thumbnail;
     const name = categoryName.toLowerCase();
     if (name.includes('anime')) return animeImage;
     if (name.includes('manga')) return mangaImage;
@@ -97,10 +98,10 @@ const Index = () => {
                             <Link to={`/blog/${post.id}`}>
                               <Card className="overflow-hidden hover:scale-[1.02] transition-all duration-300 bg-card/90 backdrop-blur-sm border border-border/50 group">
                                 <div className="aspect-[16/10] bg-gradient-to-br from-primary/10 to-accent/10 relative overflow-hidden">
-                                  {/* Category-based background image */}
+                                  {/* Custom thumbnail or category-based background image */}
                                   <div 
                                     className="absolute inset-0 bg-cover bg-center" 
-                                    style={{ backgroundImage: `url(${getCategoryImage(category.name)})` }}
+                                    style={{ backgroundImage: `url(${getCategoryImage(category.name, post.thumbnail)})` }}
                                   ></div>
                                   <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-background/60"></div>
                                   <div className="absolute bottom-4 left-4 right-4">
@@ -125,10 +126,10 @@ const Index = () => {
                               <Card className="overflow-hidden hover:scale-[1.02] transition-all duration-300 bg-card/80 backdrop-blur-sm border border-border/50 group">
                                 <div className="flex gap-3 p-4">
                                   <div className="w-20 h-20 bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg flex-shrink-0 relative overflow-hidden group-hover:scale-105 transition-transform duration-300">
-                                    {/* Category-based thumbnail */}
+                                    {/* Custom thumbnail or category-based image */}
                                     <div 
                                       className="absolute inset-0 bg-cover bg-center" 
-                                      style={{ backgroundImage: `url(${getCategoryImage(category.name)})` }}
+                                      style={{ backgroundImage: `url(${getCategoryImage(category.name, post.thumbnail)})` }}
                                     ></div>
                                     <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
                                   </div>
