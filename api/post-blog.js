@@ -13,7 +13,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { title, content, author, category, tags, featured } = req.body;
+    const { title, content, author, category, tags, featured, thumbnail, description, readTime, publishDate, views } = req.body;
 
     // Validate required fields
     if (!title || !content) {
@@ -24,15 +24,16 @@ export default async function handler(req, res) {
     const processedBlog = {
       id: `post-${Date.now()}`,
       title: title.trim(),
-      description: content.substring(0, 150) + (content.length > 150 ? '...' : ''),
+      description: description || (content.substring(0, 150) + (content.length > 150 ? '...' : '')),
       content: content,
       category: category?.toLowerCase() || 'anime',
       author: author || 'Admin',
-      readTime: estimateReadTime(content),
-      publishDate: new Date().toISOString().split('T')[0],
-      views: generateRandomViews(),
+      readTime: readTime || estimateReadTime(content),
+      publishDate: publishDate || new Date().toISOString().split('T')[0],
+      views: views || generateRandomViews(),
       tags: Array.isArray(tags) ? tags : (tags ? [tags] : ['blog']),
-      featured: featured === true || featured === 'true' || false
+      featured: featured === true || featured === 'true' || false,
+      ...(thumbnail && { thumbnail: thumbnail })
     };
 
     console.log('Processing blog post:', { title, category: processedBlog.category });
