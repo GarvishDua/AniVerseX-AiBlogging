@@ -16,6 +16,8 @@ import TermsOfService from "./pages/TermsOfService";
 import Sitemap from "./pages/Sitemap";
 import BlogPost from "./pages/BlogPost";
 import NotFound from "./pages/NotFound";
+import { AdminPanel } from "./components/admin/AdminPanel";
+import MigrateBlogsAdmin from "./pages/MigrateBlogsAdmin";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +38,8 @@ const App = () => (
             <Route path="/terms" element={<TermsOfService />} />
             <Route path="/sitemap" element={<Sitemap />} />
             <Route path="/blog/:id" element={<BlogPost />} />
+            <Route path="/admin" element={<AdminPanel />} />
+            <Route path="/admin/migrate" element={<MigrateBlogsAdmin />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
