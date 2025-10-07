@@ -63,83 +63,67 @@ export const useBlogData = () => {
     }
   }, [transformBlogData]);
 
-  // Fetch blog data from Supabase
+  // Fetch blog data with multiple fallbacks
   const fetchBlogData = useCallback(async () => {
     setLoading(true);
     setError(null);
 
     try {
-      console.log('Fetching blog data from Supabase...');
-      const data = await executeApiCall(() => apiService.getBlogDataFromAPI());
-      if (data) {
-        setBlogData(data);
-        console.log('✅ Supabase fetch successful');
+      // Strategy 1: Try serverless API first
+      console.log('Attempting serverless API...');
+      const serverlessData = await executeApiCall(() => apiService.getBlogDataFromAPI());
+      if (serverlessData) {
+        setBlogData(serverlessData);
+        console.log('✅ Serverless API successful');
         return;
       }
     } catch (err) {
-      console.error('❌ Failed to fetch blog data:', err);
-      setError('Failed to fetch blog data');
-      setBlogData({
-        posts: [],
-        categories: [
-          { name: 'Anime', color: 'primary', count: 0 },
-          { name: 'Manga', color: 'accent', count: 0 },
-          { name: 'Marvel', color: 'secondary', count: 0 }
-        ]
-      });
+      console.warn('❌ Serverless API failed:', err);
     }
+
+    try {
+      // Strategy 2: Fallback to GitHub API
+      console.log('Attempting GitHub API fallback...');
+      const githubData = await executeApiCall(() => apiService.getBlogDataFromGitHub());
+      if (githubData) {
+        setBlogData(githubData);
+        console.log('✅ GitHub API fallback successful');
+        return;
+      }
+    } catch (err) {
+      console.warn('❌ GitHub API fallback failed:', err);
+    }
+
+    try {
+      // Strategy 3: Final fallback to static file
+      console.log('Attempting static file fallback...');
+      const staticData = await executeApiCall(() => apiService.getBlogDataFromStatic());
+      if (staticData) {
+        setBlogData(staticData);
+        console.log('✅ Static file fallback successful');
+        return;
+      }
+    } catch (err) {
+      console.warn('❌ Static file fallback failed:', err);
+    }
+
+    // If all strategies fail, set empty data and error
+    console.error('❌ All data fetching strategies failed');
+    setError('Failed to fetch blog data from all sources');
+    setBlogData({
+      posts: [],
+      categories: [
+        { name: 'Anime', color: 'primary', count: 0 },
+        { name: 'Manga', color: 'accent', count: 0 },
+        { name: 'Marvel', color: 'secondary', count: 0 }
+      ]
+    });
   }, [executeApiCall]);
 
   // Refresh data function
   const refreshData = useCallback(() => {
     fetchBlogData();
   }, [fetchBlogData]);
-
-  // Create a new blog post
-  const createPost = useCallback(async (postData: {
-    title: string;
-    content: string;
-    author?: string;
-    tags?: string[];
-    category?: string;
-    description?: string;
-    thumbnail?: string;
-  }) => {
-    setLoading(true);
-    try {
-      const result = await apiService.createBlogPost(postData);
-      if (result.success) {
-        await refreshData();
-        return result;
-      }
-      throw new Error(result.error || 'Failed to create post');
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to create post';
-      setError(errorMessage);
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  // Delete a blog post
-  const deletePost = useCallback(async (postId: string) => {
-    setLoading(true);
-    try {
-      const result = await apiService.deleteBlogPost(postId);
-      if (result.success) {
-        await refreshData();
-        return result;
-      }
-      throw new Error(result.error || 'Failed to delete post');
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to delete post';
-      setError(errorMessage);
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  }, []);
 
   // Reset function
   const reset = useCallback(() => {
@@ -158,8 +142,6 @@ export const useBlogData = () => {
     error, 
     getPostsByCategory, 
     refreshData, 
-    reset,
-    createPost,
-    deletePost
+    reset 
   };
 };

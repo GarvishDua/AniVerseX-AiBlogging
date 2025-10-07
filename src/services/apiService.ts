@@ -37,22 +37,9 @@ export interface BlogData {
 
 class ApiService {
   private baseUrl: string;
-  private supabase: any;
 
   constructor() {
     this.baseUrl = window.location.origin;
-    // Initialize Supabase client
-    import('../integrations/supabase/client').then(module => {
-      this.supabase = module.supabase;
-    });
-  }
-
-  private async getSupabaseClient() {
-    if (!this.supabase) {
-      const module = await import('../integrations/supabase/client');
-      this.supabase = module.supabase;
-    }
-    return this.supabase;
   }
 
   // Generic API call wrapper
@@ -102,51 +89,9 @@ class ApiService {
     }
   }
 
-  // Fetch blog data from Supabase
+  // Fetch blog data from serverless API (optimized)
   async getBlogDataFromAPI(): Promise<ApiResponse<BlogData>> {
-    try {
-      const supabase = await this.getSupabaseClient();
-      const { data: posts, error } = await supabase
-        .from('blogs')
-        .select('*')
-        .order('publish_date', { ascending: false });
-
-      if (error) throw error;
-
-      // Transform to BlogData format
-      const categoryMap: { [key: string]: { color: 'primary' | 'accent' | 'secondary'; count: number } } = {
-        'anime': { color: 'primary', count: 0 },
-        'manga': { color: 'accent', count: 0 },
-        'marvel': { color: 'secondary', count: 0 }
-      };
-
-      posts?.forEach((post: any) => {
-        const category = post.category.toLowerCase();
-        if (categoryMap[category]) {
-          categoryMap[category].count++;
-        }
-      });
-
-      const categories = Object.entries(categoryMap).map(([name, data]) => ({
-        name: name.charAt(0).toUpperCase() + name.slice(1),
-        color: data.color,
-        count: data.count
-      }));
-
-      return {
-        success: true,
-        data: {
-          posts: posts || [],
-          categories
-        }
-      };
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to fetch from Supabase';
-      return {
-        success: false,
-        error: errorMessage
-      };
-    }
+    return this.makeApiCall<BlogData>(`${this.baseUrl}/api/get-blogs`);
   }
 
   // Fetch blog data from GitHub API (fallback only)
@@ -196,70 +141,11 @@ class ApiService {
     author?: string;
     tags?: string[];
     category?: string;
-    description?: string;
-    thumbnail?: string;
   }): Promise<ApiResponse<any>> {
-    try {
-      const supabase = await this.getSupabaseClient();
-      
-      const newPost = {
-        id: `post-${Date.now()}`,
-        title: blogPost.title,
-        content: blogPost.content,
-        category: blogPost.category || 'anime',
-        author: blogPost.author || 'Garvish Dua',
-        description: blogPost.description || blogPost.content.substring(0, 150) + '...',
-        tags: blogPost.tags || [],
-        thumbnail: blogPost.thumbnail || '',
-        read_time: `${Math.ceil(blogPost.content.split(' ').length / 200)} min read`,
-        publish_date: new Date().toISOString().split('T')[0],
-        views: '0',
-        featured: false
-      };
-
-      const { data, error } = await supabase
-        .from('blogs')
-        .insert([newPost])
-        .select()
-        .single();
-
-      if (error) throw error;
-
-      return {
-        success: true,
-        data
-      };
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to create post';
-      return {
-        success: false,
-        error: errorMessage
-      };
-    }
-  }
-
-  // Delete a blog post
-  async deleteBlogPost(postId: string): Promise<ApiResponse<any>> {
-    try {
-      const supabase = await this.getSupabaseClient();
-      const { error } = await supabase
-        .from('blogs')
-        .delete()
-        .eq('id', postId);
-
-      if (error) throw error;
-
-      return {
-        success: true,
-        message: 'Post deleted successfully'
-      };
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to delete post';
-      return {
-        success: false,
-        error: errorMessage
-      };
-    }
+    return this.makeApiCall(`${this.baseUrl}/api/post-blog`, {
+      method: 'POST',
+      body: JSON.stringify(blogPost),
+    });
   }
 
   // Health check
