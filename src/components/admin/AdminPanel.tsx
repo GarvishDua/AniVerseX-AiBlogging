@@ -33,9 +33,7 @@ export const AdminPanel: React.FC = () => {
     try {
       await createPost({
         ...newPost,
-        tags: newPost.tags.split(',').map(tag => tag.trim()),
-        featured: false,
-        views: '0'
+        tags: newPost.tags.split(',').map(tag => tag.trim())
       });
       setNewPost({
         title: '',
@@ -146,16 +144,18 @@ export const AdminPanel: React.FC = () => {
                   <p className="text-gray-600 mb-2">{post.description}</p>
                   <div className="flex flex-wrap gap-2 mb-2">
                     <Badge variant="secondary">{post.category}</Badge>
-                    <Badge variant="outline">{post.readTime}</Badge>
-                    <Badge variant="outline">{post.publishDate}</Badge>
-                    <Badge variant="outline">{post.views} views</Badge>
+                    {post.readTime && <Badge variant="outline">{post.readTime}</Badge>}
+                    {post.publishDate && <Badge variant="outline">{post.publishDate}</Badge>}
+                    {post.views && <Badge variant="outline">{post.views} views</Badge>}
                     {post.featured && <Badge className="bg-yellow-500">Featured</Badge>}
                   </div>
-                  <div className="flex flex-wrap gap-1">
-                    {post.tags.map(tag => (
-                      <Badge key={tag} variant="outline" className="text-xs">{tag}</Badge>
-                    ))}
-                  </div>
+                  {post.tags && post.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-1">
+                      {post.tags.map(tag => (
+                        <Badge key={tag} variant="outline" className="text-xs">{tag}</Badge>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 <Button
                   variant="destructive"

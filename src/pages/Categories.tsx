@@ -10,13 +10,16 @@ import { Calendar, Eye, Filter, ArrowLeft } from "lucide-react";
 interface Post {
   id: string;
   title: string;
-  description: string;
+  description?: string;
+  excerpt?: string;
   category: string;
-  readTime: string;
-  publishDate: string;
-  views: string;
-  tags: string[];
-  featured: boolean;
+  readTime?: string;
+  read_time?: string;
+  publishDate?: string;
+  publish_date?: string;
+  views?: string;
+  tags?: string[];
+  featured?: boolean;
 }
 
 const Categories = () => {
@@ -162,7 +165,7 @@ const Categories = () => {
                         <Badge variant="default" className="font-body">
                           {post.category}
                         </Badge>
-                        {post.tags.slice(0, 2).map((tag) => (
+                        {post.tags && post.tags.slice(0, 2).map((tag) => (
                           <Badge key={tag} variant="secondary" className="text-xs">
                             {tag}
                           </Badge>
@@ -180,20 +183,22 @@ const Categories = () => {
                         </h2>
                       </Link>
                       
-                      <div className="text-muted-foreground font-body line-clamp-2">
-                        <MarkdownText inline>
-                          {post.description}
-                        </MarkdownText>
-                      </div>
+                      {(post.description || post.excerpt) && (
+                        <div className="text-muted-foreground font-body line-clamp-2">
+                          <MarkdownText inline>
+                            {post.description || post.excerpt || ''}
+                          </MarkdownText>
+                        </div>
+                      )}
                       
                       <div className="flex items-center gap-6 text-sm text-muted-foreground font-body">
                         <div className="flex items-center gap-2">
                           <Calendar className="h-4 w-4" />
-                          <span>{post.publishDate}</span>
+                          <span>{post.publishDate || post.publish_date || 'N/A'}</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <Eye className="h-4 w-4" />
-                          <span>{post.views} views</span>
+                          <span>{post.views || '0'} views</span>
                         </div>
                       </div>
                     </div>
